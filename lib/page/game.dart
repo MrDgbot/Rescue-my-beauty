@@ -40,26 +40,26 @@ class _GamePageState extends State<GamePage>
         color: Colors.transparent,
         child: BonfireTiledWidget(
           onReady: (game) async {
-            await Future.delayed(
-              const Duration(milliseconds: 500),
-              () {
-                if (game.player != null) {
-                  game.startScene(
-                    [
-                      CameraSceneAction.target(game.player, zoom: 0.5),
-                      CameraSceneAction.position(game.size * 4.7, zoom: 0.5),
-                      DelaySceneAction(const Duration(milliseconds: 500)),
-                      CameraSceneAction.target(game.player, zoom: 1),
-                    ],
-                  );
-                }
-              },
-            );
+            // await Future.delayed(
+            //   const Duration(milliseconds: 500),
+            //   () {
+            //     if (game.player != null) {
+            //       game.startScene(
+            //         [
+            //           CameraSceneAction.target(game.player, zoom: 0.5),
+            //           CameraSceneAction.position(game.size * 4.7, zoom: 0.5),
+            //           DelaySceneAction(const Duration(milliseconds: 500)),
+            //           CameraSceneAction.target(game.player, zoom: 1),
+            //         ],
+            //       );
+            //     }
+            //   },
+            // );
           },
           constructionMode: false,
           showCollisionArea: false,
           gameController: _controller,
-          lightingColorGame: Colors.black.withOpacity(0.2),
+          lightingColorGame: Colors.black.withOpacity(0.99),
           background: BackgroundColorGame(Colors.black),
           player: LocalPlayer(1, "野比大雄", Vector2(4 * tileSize, 4 * tileSize)),
           joystick: Joystick(

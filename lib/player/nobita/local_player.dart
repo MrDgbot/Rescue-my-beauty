@@ -23,8 +23,8 @@ class LocalPlayer extends SimplePlayer with Lighting, ObjectCollision {
     /// 发光
     setupLighting(
       LightingConfig(
-        radius: width,
-        blurBorder: width,
+        radius: width*1.7,
+        blurBorder: width*1.7,
         color: Colors.transparent,
       ),
     );
@@ -34,8 +34,8 @@ class LocalPlayer extends SimplePlayer with Lighting, ObjectCollision {
       CollisionConfig(
         collisions: [
           CollisionArea.rectangle(
-            size: Vector2(valueByTileSize(8), valueByTileSize(8)),
-            align: Vector2(tileSize * 3, tileSize * 3),
+            size: Vector2(valueByTileSize(14), valueByTileSize(14)),
+            align: Vector2(0, 0),
           ),
         ],
       ),
@@ -43,7 +43,7 @@ class LocalPlayer extends SimplePlayer with Lighting, ObjectCollision {
   }
 
   double valueByTileSize(double value) {
-    return value * (tileSize / 16);
+    return value * (tileSize/4);
   }
 
   @override
