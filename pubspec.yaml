@@ -1,0 +1,41 @@
+name: rescue_my_beauty
+description: A new Flutter project.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.17.5 <3.0.0"
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+  bonfire: ^2.6.3
+  cupertino_icons: ^1.0.5
+  flame_splash_screen: ^0.1.0
+  flutter_smart_dialog: ^4.5.3+6
+  ff_annotation_route_library: ^3.0.0
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+flutter:
+
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/images/emotes/
+    - assets/images/player/
+    - assets/images/tiles/
+
+
+  fonts:
+    - family: pixel
+      fonts:
+        - asset: fonts/font_pixel.ttf
