@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rescue_my_beauty/player/nobita/local_player.dart';
 
+import '../decoration/light.dart';
+import '../decoration/spikes.dart';
+
 @FFRoute(
   name: "rescue://gamepage",
   routeName: "GamePage",
@@ -59,7 +62,7 @@ class _GamePageState extends State<GamePage>
           constructionMode: false,
           showCollisionArea: false,
           gameController: _controller,
-          lightingColorGame: Colors.black.withOpacity(0.99),
+          lightingColorGame: Colors.black.withOpacity(0.4),
           background: BackgroundColorGame(Colors.black),
           player: LocalPlayer(1, "野比大雄", Vector2(4 * tileSize, 4 * tileSize)),
           joystick: Joystick(
@@ -80,6 +83,10 @@ class _GamePageState extends State<GamePage>
           map: TiledWorldMap(
             '$assetsPath/map.json',
             forceTileSize: Size(tileSize, tileSize),
+            objectsBuilder: {
+              'light':(p)=>Light(p.position,p.size),
+              'spikes': (p) => Spikes(p.position),
+            }
           ),
           cameraConfig: CameraConfig(
             smoothCameraEnabled: true,

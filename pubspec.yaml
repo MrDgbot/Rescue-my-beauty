@@ -33,6 +33,7 @@ flutter:
     - assets/images/emotes/
     - assets/images/player/
     - assets/images/tiles/
+    - assets/images/items/spikes.png
 
 
   fonts:
