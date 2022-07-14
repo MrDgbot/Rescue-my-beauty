@@ -1,17 +1,18 @@
 import 'package:bonfire/bonfire.dart';
-import '../player/game_sprite_sheet.dart';
-import '../player/nobita/local_player.dart';
+import 'package:rescue_my_beauty/common/utils.dart';
+import 'package:rescue_my_beauty/player/game_sprite_sheet.dart';
+
 
 class Spikes extends GameDecoration with Sensor {
   final double damage;
 
-  Spikes(Vector2 position, {this.damage = 60})
+  Spikes(Vector2 position, {this.damage = 5})
       : super.withAnimation(
             animation: GameSpriteSheet.spikes(),
             position: position,
-            size: Vector2(tileSize, tileSize)) {
+            size: Vector2(GameUtils.sTileSize, GameUtils.sTileSize)) {
     setupSensorArea(
-      intervalCheck: 100,
+      intervalCheck: 250,
     );
   }
 

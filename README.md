@@ -18,8 +18,6 @@
 
 
 
-
-
 ## 素材来源
 
 [多啦A梦-整合包-合集](https://www.aigei.com/view/9988.html)
@@ -27,3 +25,9 @@
 [Dungeontileset](https://0x72.itch.io/dungeontileset-ii)
 
 ##### 如有侵权，通知删除
+
+
+
+## 特别感谢
+
+本次游戏灵感，游戏指导：[豆老师！！](https://github.com/AmosHuKe)

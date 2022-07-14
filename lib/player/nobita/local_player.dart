@@ -1,13 +1,15 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:rescue_my_beauty/common/utils.dart';
 import 'package:rescue_my_beauty/player/sprite_sheet_hero.dart';
 
-double tileSize = 20.0;
-
 class LocalPlayer extends SimplePlayer with Lighting, ObjectCollision {
-  static double maxSpeed = tileSize * 10;
   final int id;
   final String nick;
+
+  static const double _playerRatio = 1.1;
+  static final double maxSpeed = GameUtils.sTileSize * 5;
 
   bool lockMove = false;
 
@@ -18,32 +20,29 @@ class LocalPlayer extends SimplePlayer with Lighting, ObjectCollision {
               SpriteSheetHero.animationBySpriteSheet(SpriteSheetHero.hero1),
           speed: maxSpeed,
           life: 100,
-          size: Vector2.all(tileSize * 3.5),
+          size: Vector2.all(GameUtils.sTileSize / _playerRatio),
         ) {
     /// 发光
     setupLighting(
       LightingConfig(
-        radius: width*1.7,
-        blurBorder: width*1.7,
+        radius: width * 2,
+        blurBorder: width * 2,
         color: Colors.transparent,
       ),
     );
 
-    /// 碰撞
+    /// 人物碰撞
     setupCollision(
       CollisionConfig(
         collisions: [
           CollisionArea.rectangle(
-            size: Vector2(valueByTileSize(14), valueByTileSize(14)),
+            size: Vector2(GameUtils.sTileSize / _playerRatio,
+                GameUtils.sTileSize / _playerRatio),
             align: Vector2(0, 0),
           ),
         ],
       ),
     );
-  }
-
-  double valueByTileSize(double value) {
-    return value * (tileSize/4);
   }
 
   @override
@@ -54,15 +53,12 @@ class LocalPlayer extends SimplePlayer with Lighting, ObjectCollision {
         canvas,
         drawInBottom: true,
         margin: 0,
-        width: tileSize * 1.5,
-        borderWidth: tileSize / 5,
-        height: tileSize / 5,
+        width: GameUtils.tileSize * 2.5,
+        borderWidth: GameUtils.tileSize / 4,
+        height: GameUtils.tileSize / 4,
         borderColor: Colors.white.withOpacity(0.5),
         borderRadius: BorderRadius.circular(2),
-        align: Offset(
-          tileSize * 1,
-          tileSize * 4,
-        ),
+        align: Offset(GameUtils.sTileSize / 5, GameUtils.sTileSize),
       );
     }
     super.render(canvas);
@@ -72,7 +68,6 @@ class LocalPlayer extends SimplePlayer with Lighting, ObjectCollision {
   @override
   bool onCollision(GameComponent component, bool active) {
     bool active = true;
-    print("发生碰撞");
 
     /// 碰撞 Orc 不发生碰撞
     // if (component is Orc) {
@@ -117,6 +112,7 @@ class LocalPlayer extends SimplePlayer with Lighting, ObjectCollision {
     super.joystickAction(event);
   }
 
+  /// 移动操纵杆时调用的方法。
   @override
   void joystickChangeDirectional(JoystickDirectionalEvent event) {
     if (lockMove || isDead) {
@@ -132,26 +128,22 @@ class LocalPlayer extends SimplePlayer with Lighting, ObjectCollision {
     if (!isDead) {
       showDamage(
         damage,
-        initVelocityTop: -2,
-        config: TextStyle(color: Colors.white, fontSize: tileSize / 2),
+        initVelocityTop: -10,
+        config: TextStyle(
+            color: Colors.amberAccent, fontSize: GameUtils.sTileSize / 4),
       );
-      // lockMove = true;
+      lockMove = true;
       /// 屏幕变红
       gameRef.lighting
           ?.animateToColor(const Color(0xFF630000).withOpacity(0.7));
-      // gameRef.add(
-      //   Orc(
-      //     Vector2(
-      //       (gameRef.player?.position.x ?? 0) - Random().nextInt(20),
-      //       (gameRef.player?.position.y ?? 0) - Random().nextInt(20),
-      //     ),
-      //   ),
-      // );
-      idle();
-      // _addDamageAnimation(() {
-      //   lockMove = false;
-      //   gameRef.lighting?.animateToColor(Colors.black.withOpacity(0.7));
-      // });
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if(!isDead){
+          idle();
+          lockMove = false;
+          gameRef.lighting?.animateToColor(GameUtils.bgColor);
+        }
+      });
+
     }
     super.receiveDamage(attacker, damage, from);
   }
@@ -180,6 +172,7 @@ class LocalPlayer extends SimplePlayer with Lighting, ObjectCollision {
     super.die();
   }
 
+  /// 攻击
   void execAttack() {
     final anim = SpriteSheetHero.attackAxe;
     simpleAttackRange(
@@ -189,14 +182,14 @@ class LocalPlayer extends SimplePlayer with Lighting, ObjectCollision {
       animationUp: anim,
       animationDown: anim,
       animationDestroy: SpriteSheetHero.smokeExplosion,
-      size: Vector2.all(tileSize * 0.9),
+      size: Vector2.all(GameUtils.tileSize * 0.9),
       speed: speed * 3,
       damage: 15,
       enableDiagonal: false,
       collision: CollisionConfig(
         collisions: [
           CollisionArea.rectangle(
-            size: Vector2(tileSize * 0.9, tileSize * 0.9),
+            size: Vector2(GameUtils.tileSize * 0.9, GameUtils.tileSize * 0.9),
           )
         ],
       ),

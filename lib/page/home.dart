@@ -11,36 +11,35 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Center(
-        child: Wrap(
-          spacing: 20,
-          direction: Axis.vertical,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            Text(
-              "のび太が静香を救う",
-              style: Theme.of(context).textTheme.headline3,
-            ),
-            Text(
-              "大雄之拯救静香",
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _doPlay(context);
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  "Play",
-                  style: Theme.of(context).textTheme.headline5,
-                ),
+    return Container(
+      alignment: Alignment.center,
+      color: Colors.black,
+      child: Wrap(
+        spacing: 20,
+        direction: Axis.vertical,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: [
+          Text(
+            "のび太が静香を救う",
+            style: Theme.of(context).textTheme.headline3,
+          ),
+          Text(
+            "大雄之拯救静香",
+            style: Theme.of(context).textTheme.headline4,
+          ),
+          ElevatedButton(
+            onPressed: () {
+              _doPlay(context);
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                "Play",
+                style: Theme.of(context).textTheme.headline5,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
