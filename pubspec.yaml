@@ -36,6 +36,7 @@ flutter:
     - assets/images/player/
     - assets/images/tiles/
     - assets/images/items/spikes.png
+    - assets/images/items/potion_red.png
 
 
   fonts:

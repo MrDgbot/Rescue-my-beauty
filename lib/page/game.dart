@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:rescue_my_beauty/common/utils.dart';
 import 'package:rescue_my_beauty/decoration/boss.dart';
 import 'package:rescue_my_beauty/decoration/light.dart';
+import 'package:rescue_my_beauty/decoration/potion_life.dart';
 import 'package:rescue_my_beauty/decoration/spikes.dart';
 import 'package:rescue_my_beauty/player/nobita/local_player.dart';
 import 'package:rescue_my_beauty/rescue_my_beauty_routes.dart';
@@ -72,6 +73,7 @@ class _GamePageState extends State<GamePage>
               'monster': (p) => Boss(p.position, p.size),
               'boss': (p) => Boss(p.position, p.size, zoom: 3),
               'spikes': (p) => Spikes(p.position),
+              'potion':(p)=>PotionLife(p.position),
             }),
         cameraConfig:
             CameraConfig(smoothCameraEnabled: true, smoothCameraSpeed: 2),
