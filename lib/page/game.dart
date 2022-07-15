@@ -13,6 +13,7 @@ import 'package:rescue_my_beauty/decoration/potion_life.dart';
 import 'package:rescue_my_beauty/decoration/spikes.dart';
 import 'package:rescue_my_beauty/player/nobita/local_player.dart';
 import 'package:rescue_my_beauty/rescue_my_beauty_routes.dart';
+import 'package:rescue_my_beauty/topvars.dart';
 import 'package:rescue_my_beauty/widgets/dialogs.dart';
 import 'package:rescue_my_beauty/widgets/interface_overlay.dart';
 
@@ -107,7 +108,7 @@ class _GamePageState extends State<GamePage>
           child: const Center(
             child: Text(
               '载入中...',
-              style: TextStyle(color: Colors.white),
+              style: textStyle24B,
             ),
           ),
         ),

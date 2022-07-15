@@ -140,6 +140,13 @@ class _InterfaceOverlayState extends State<InterfaceOverlay>
             },
           ),
           Dialogs.menuItem(
+            '返回游戏',
+            () {
+              widget.gameController.gameRef.resumeEngine();
+              Navigator.of(context).pop();
+            },
+          ),
+          Dialogs.menuItem(
             '返回主页',
             () => Navigator.of(context).pushNamedAndRemoveUntil(
                 Routes.rescueHomepage, (route) => false),

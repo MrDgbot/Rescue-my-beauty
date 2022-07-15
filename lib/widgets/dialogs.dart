@@ -10,37 +10,40 @@ class Dialogs {
       context: context,
       barrierDismissible: false,
       builder: (context) {
-        return Material(
-          type: MaterialType.transparency,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Text(
-                  "游 戏 结 束",
-                  style: textStyle24B.copyWith(
-                    color: Colors.orangeAccent,
-                    fontSize: 52,
+        return WillPopScope(
+          onWillPop: () => Future.value(false),
+          child: Material(
+            type: MaterialType.transparency,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Text(
+                    "游 戏 结 束",
+                    style: textStyle24B.copyWith(
+                      color: Colors.orangeAccent,
+                      fontSize: 52,
+                    ),
                   ),
-                ),
-                Wrap(
-                  spacing: 20,
-                  direction: Axis.vertical,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    menuItem(
-                      '重新开始',
-                      playAgain,
-                    ),
-                    menuItem(
-                      '返回主页',
-                      () => Navigator.of(context)
-                          .popAndPushNamed(Routes.rescueHomepage),
-                    ),
-                  ],
-                ),
-              ],
+                  Wrap(
+                    spacing: 20,
+                    direction: Axis.vertical,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      menuItem(
+                        '重新开始',
+                        playAgain,
+                      ),
+                      menuItem(
+                        '返回主页',
+                        () => Navigator.of(context)
+                            .popAndPushNamed(Routes.rescueHomepage),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         );
@@ -53,25 +56,28 @@ class Dialogs {
       context: context,
       barrierDismissible: false,
       builder: (context) {
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              Text(
-                "游 戏 暂 停",
-                style: textStyle24B.copyWith(
-                  color: Colors.orangeAccent,
-                  fontSize: 52,
+        return WillPopScope(
+          onWillPop: () => Future.value(false),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Text(
+                  "游 戏 暂 停",
+                  style: textStyle24B.copyWith(
+                    color: Colors.orangeAccent,
+                    fontSize: 52,
+                  ),
                 ),
-              ),
-              Wrap(
-                spacing: 20,
-                direction: Axis.vertical,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: playAgain,
-              ),
-            ],
+                Wrap(
+                  spacing: 20,
+                  direction: Axis.vertical,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: playAgain,
+                ),
+              ],
+            ),
           ),
         );
       },

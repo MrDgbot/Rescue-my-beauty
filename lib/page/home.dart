@@ -4,7 +4,6 @@ import 'package:bonfire/bonfire.dart';
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flame_splash_screen/flame_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:rescue_my_beauty/common/sounds.dart';
 import 'package:rescue_my_beauty/player/sprite_sheet_hero.dart';
 import 'package:rescue_my_beauty/rescue_my_beauty_routes.dart';
 
