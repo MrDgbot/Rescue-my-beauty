@@ -37,6 +37,7 @@ flutter:
     - assets/images/tiles/
     - assets/images/items/spikes.png
     - assets/images/items/potion_red.png
+    - assets/images/items/chest_spriteSheet.png
 
 
   fonts:

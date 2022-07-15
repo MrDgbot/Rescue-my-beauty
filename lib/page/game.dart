@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rescue_my_beauty/common/utils.dart';
 import 'package:rescue_my_beauty/decoration/boss.dart';
+import 'package:rescue_my_beauty/decoration/chest.dart';
 import 'package:rescue_my_beauty/decoration/light.dart';
 import 'package:rescue_my_beauty/decoration/potion_life.dart';
 import 'package:rescue_my_beauty/decoration/spikes.dart';
@@ -74,6 +75,7 @@ class _GamePageState extends State<GamePage>
               'boss': (p) => Boss(p.position, p.size, zoom: 3),
               'spikes': (p) => Spikes(p.position),
               'potion':(p)=>PotionLife(p.position),
+              'chest': (p) => Chest(p.position),
             }),
         cameraConfig:
             CameraConfig(smoothCameraEnabled: true, smoothCameraSpeed: 2),
