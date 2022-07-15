@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:bonfire/bonfire.dart';
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +7,8 @@ import 'package:rescue_my_beauty/decoration/boss.dart';
 import 'package:rescue_my_beauty/decoration/light.dart';
 import 'package:rescue_my_beauty/decoration/spikes.dart';
 import 'package:rescue_my_beauty/player/nobita/local_player.dart';
+import 'package:rescue_my_beauty/rescue_my_beauty_routes.dart';
+import 'package:rescue_my_beauty/widgets/dialogs.dart';
 
 @FFRoute(
   name: "rescue://gamepage",
@@ -41,7 +41,7 @@ class _GamePageState extends State<GamePage>
       child: BonfireTiledWidget(
         onReady: _startCameraMove,
         constructionMode: false,
-        showCollisionArea: true,
+        showCollisionArea: false,
         gameController: _controller,
         lightingColorGame: GameUtils.bgColor,
         background: BackgroundColorGame(Colors.black),
@@ -100,7 +100,7 @@ class _GamePageState extends State<GamePage>
 
   /// 开局相机视角移动
   Future<void> _startCameraMove(BonfireGame game) async {
-    if(!GameUtils.isStartCameraMove){
+    if (!GameUtils.isStartCameraMove) {
       return;
     }
     Future.delayed(const Duration(milliseconds: 500), () {
@@ -121,15 +121,13 @@ class _GamePageState extends State<GamePage>
     setState(() {
       _showGameOver = true;
     });
-    // Dialogs.showGameOver(
-    //   context,
-    //       () {
-    //     Navigator.of(context).pushAndRemoveUntil(
-    //       MaterialPageRoute(builder: (context) => Game()),
-    //           (Route<dynamic> route) => false,
-    //     );
-    //   },
-    // );
+    Dialogs.showGameOver(
+      context,
+      () {
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil(Routes.rescueGamepage, (route) => false);
+      },
+    );
   }
 
   @override

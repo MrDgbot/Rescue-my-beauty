@@ -1,6 +1,5 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:rescue_my_beauty/common/utils.dart';
 import 'package:rescue_my_beauty/player/sprite_sheet_hero.dart';
 
@@ -130,20 +129,22 @@ class LocalPlayer extends SimplePlayer with Lighting, ObjectCollision {
         damage,
         initVelocityTop: -10,
         config: TextStyle(
-            color: Colors.amberAccent, fontSize: GameUtils.sTileSize / 4),
+            color: Colors.amberAccent,
+            fontSize: GameUtils.sTileSize / 4,
+            fontFamily: "pixel"),
       );
       lockMove = true;
+
       /// 屏幕变红
       gameRef.lighting
           ?.animateToColor(const Color(0xFF630000).withOpacity(0.7));
       Future.delayed(const Duration(milliseconds: 500), () {
-        if(!isDead){
+        if (!isDead) {
           idle();
           lockMove = false;
           gameRef.lighting?.animateToColor(GameUtils.bgColor);
         }
       });
-
     }
     super.receiveDamage(attacker, damage, from);
   }
