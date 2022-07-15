@@ -425,26 +425,26 @@
                 {
                  "class":"",
                  "ellipse":true,
-                 "height":27.3333,
+                 "height":26.3333,
                  "id":62,
                  "name":"light",
                  "rotation":0,
                  "visible":true,
-                 "width":42.6667,
-                 "x":260.667,
+                 "width":23.0000333333334,
+                 "x":268.000333333333,
                  "y":9.33333
                 }, 
                 {
                  "class":"",
                  "ellipse":true,
-                 "height":36.6667,
+                 "height":26.0000333333333,
                  "id":65,
                  "name":"light",
                  "rotation":0,
                  "visible":true,
-                 "width":36,
-                 "x":582.667,
-                 "y":142.667
+                 "width":26.6666666666666,
+                 "x":585.000333333333,
+                 "y":153.000333333333
                 }, 
                 {
                  "class":"",

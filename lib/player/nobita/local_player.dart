@@ -1,9 +1,12 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 import 'package:rescue_my_beauty/common/utils.dart';
+import 'package:rescue_my_beauty/player/nobita/local_player_controller.dart';
 import 'package:rescue_my_beauty/player/sprite_sheet_hero.dart';
+import 'package:rescue_my_beauty/topvars.dart';
 
-class LocalPlayer extends SimplePlayer with Lighting, ObjectCollision {
+class LocalPlayer extends SimplePlayer
+    with Lighting, ObjectCollision, UseStateController<LocalPlayerController> {
   final int id;
   final String nick;
 
@@ -42,25 +45,6 @@ class LocalPlayer extends SimplePlayer with Lighting, ObjectCollision {
         ],
       ),
     );
-  }
-
-  @override
-  void render(Canvas canvas) {
-    if (!isDead) {
-      /// 生命条
-      drawDefaultLifeBar(
-        canvas,
-        drawInBottom: true,
-        margin: 0,
-        width: GameUtils.tileSize * 2.5,
-        borderWidth: GameUtils.tileSize / 4,
-        height: GameUtils.tileSize / 4,
-        borderColor: Colors.white.withOpacity(0.5),
-        borderRadius: BorderRadius.circular(2),
-        align: Offset(GameUtils.sTileSize / 5, GameUtils.sTileSize),
-      );
-    }
-    super.render(canvas);
   }
 
   /// 碰撞触发
@@ -128,10 +112,7 @@ class LocalPlayer extends SimplePlayer with Lighting, ObjectCollision {
       showDamage(
         damage,
         initVelocityTop: -10,
-        config: TextStyle(
-            color: Colors.amberAccent,
-            fontSize: GameUtils.sTileSize / 4,
-            fontFamily: "pixel"),
+        config: textStyleNum.copyWith(color: Colors.amberAccent),
       );
       lockMove = true;
 

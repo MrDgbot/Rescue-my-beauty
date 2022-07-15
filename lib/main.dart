@@ -4,7 +4,7 @@ import 'package:bonfire/bonfire.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:rescue_my_beauty/common/sounds.dart';
+import 'package:rescue_my_beauty/player/nobita/local_player_controller.dart';
 import 'package:rescue_my_beauty/player/sprite_sheet_hero.dart';
 import 'package:rescue_my_beauty/rescue_my_beauty_route.dart';
 import 'package:rescue_my_beauty/rescue_my_beauty_routes.dart';
@@ -25,6 +25,7 @@ Future<void> main() async {
   }
   // await Sounds.initialize();
   await SpriteSheetHero.load();
+  BonfireInjector().put((i) => LocalPlayerController());
 
   runApp(const MyApp());
 }

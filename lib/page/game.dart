@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:bonfire/bonfire.dart';
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rescue_my_beauty/common/screen.dart';
 import 'package:rescue_my_beauty/common/utils.dart';
 import 'package:rescue_my_beauty/decoration/boss.dart';
 import 'package:rescue_my_beauty/decoration/chest.dart';
@@ -11,6 +14,7 @@ import 'package:rescue_my_beauty/decoration/spikes.dart';
 import 'package:rescue_my_beauty/player/nobita/local_player.dart';
 import 'package:rescue_my_beauty/rescue_my_beauty_routes.dart';
 import 'package:rescue_my_beauty/widgets/dialogs.dart';
+import 'package:rescue_my_beauty/widgets/interface_overlay.dart';
 
 @FFRoute(
   name: "rescue://gamepage",
@@ -33,6 +37,7 @@ class _GamePageState extends State<GamePage>
   void initState() {
     WidgetsBinding.instance.addObserver(this);
     _controller = GameController()..addListener(this);
+
     super.initState();
   }
 
@@ -67,18 +72,36 @@ class _GamePageState extends State<GamePage>
           //   )
           // ],
         ),
-        map: TiledWorldMap('tiles/map.json',
-            forceTileSize: Size(GameUtils.sTileSize, GameUtils.sTileSize),
-            objectsBuilder: {
-              'light': (p) => Light(p.position, p.size),
-              'monster': (p) => Boss(p.position, p.size),
-              'boss': (p) => Boss(p.position, p.size, zoom: 3),
-              'spikes': (p) => Spikes(p.position),
-              'potion':(p)=>PotionLife(p.position),
-              'chest': (p) => Chest(p.position),
-            }),
-        cameraConfig:
-            CameraConfig(smoothCameraEnabled: true, smoothCameraSpeed: 2),
+        map: TiledWorldMap(
+          'tiles/map.json',
+          forceTileSize: Size(GameUtils.sTileSize, GameUtils.sTileSize),
+          objectsBuilder: {
+            'light': (p) => Light(p.position, p.size),
+            'monster': (p) => Boss(p.position, p.size),
+            'boss': (p) => Boss(p.position, p.size, zoom: 3),
+            'spikes': (p) => Spikes(p.position, randomDamage: true),
+            'potion': (p) => PotionLife(p.position),
+            'chest': (p) => Chest(p.position),
+          },
+        ),
+        cameraConfig: CameraConfig(
+          smoothCameraEnabled: true,
+          smoothCameraSpeed: 2,
+        ),
+        initialActiveOverlays: const ['barLife', 'miniMap'],
+        overlayBuilderMap: {
+          'barLife': (_, game) => InterfaceOverlay(
+                gameController: _controller,
+              ),
+          'miniMap': (context, game) => MiniMap(
+                game: game,
+                margin: const EdgeInsets.all(10),
+                borderRadius: BorderRadius.circular(10),
+                size: Vector2.all(
+                    min(Screen.screenHeight, Screen.screenWidth) / 4.4),
+                border: Border.all(color: Colors.white.withOpacity(0.5)),
+              ),
+        },
         progress: Container(
           color: Colors.black,
           child: const Center(
@@ -125,6 +148,7 @@ class _GamePageState extends State<GamePage>
     setState(() {
       _showGameOver = true;
     });
+
     Dialogs.showGameOver(
       context,
       () {

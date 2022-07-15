@@ -10,9 +10,9 @@ class LocalPlayerController extends StateController<LocalPlayer> {
   double life = 100;
   Direction? cDirection;
 
-  // final SocketManager _socketManager;
-
   LocalPlayerController();
+
+  // final SocketManager _socketManager;
 
   @override
   void onReady(LocalPlayer component) {

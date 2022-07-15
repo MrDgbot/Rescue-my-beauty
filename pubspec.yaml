@@ -18,7 +18,7 @@ dependencies:
   flame_splash_screen: ^0.1.0
   flutter_smart_dialog: ^4.5.3+6
   ff_annotation_route_library: ^3.0.0
-
+  sprung: ^3.0.0
 
 dev_dependencies:
   flutter_test:

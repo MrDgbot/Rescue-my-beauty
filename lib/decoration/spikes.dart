@@ -1,17 +1,20 @@
+import 'dart:math';
+
 import 'package:bonfire/bonfire.dart';
 import 'package:rescue_my_beauty/common/utils.dart';
 import 'package:rescue_my_beauty/player/game_sprite_sheet.dart';
 
 class Spikes extends GameDecoration with Sensor {
   final double damage;
+  final bool randomDamage;
 
-  Spikes(Vector2 position, {this.damage = 5})
+  Spikes(Vector2 position, {this.damage = 5, this.randomDamage = false})
       : super.withAnimation(
             animation: GameSpriteSheet.spikes(),
             position: position,
             size: Vector2(GameUtils.sTileSize, GameUtils.sTileSize)) {
     setupSensorArea(
-      intervalCheck: 250,
+      intervalCheck: 80,
     );
   }
 
@@ -20,7 +23,9 @@ class Spikes extends GameDecoration with Sensor {
     if (component is Player) {
       if (animation?.currentIndex == (animation?.frames.length ?? 0) - 1 ||
           animation?.currentIndex == (animation?.frames.length ?? 0) - 2) {
-        gameRef.player?.receiveDamage(AttackFromEnum.ENEMY, damage, 0);
+        final double mDamage =
+            randomDamage ? damage + Random().nextDouble() * 5 : damage;
+        gameRef.player?.receiveDamage(AttackFromEnum.ENEMY, mDamage, 0);
       }
     }
   }

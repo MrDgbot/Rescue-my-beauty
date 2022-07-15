@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:bonfire/bonfire.dart';
 
+/// 火把
+/// [作用] 发光
+/// [参数] zoom 发光的缩放
 class Light extends GameDecoration with Lighting {
   final double? zoom;
 

@@ -47,8 +47,8 @@ class Chest extends GameDecoration with TapGesture {
     if (_observedPlayer) {
       _textConfig.render(
         canvas,
-        'Touch me !!',
-        Vector2(x - width / 1.5, center.y - (height + 5)),
+        '点我 !!',
+        Vector2(center.x - (GameUtils.sTileSize / 4), center.y - (height + 5)),
       );
     }
   }
@@ -87,18 +87,18 @@ class Chest extends GameDecoration with TapGesture {
         animation: GameSpriteSheet.emote(),
         target: this,
         size: size,
-        positionFromTarget: size / -2,
+        positionFromTarget: size / -10,
       ),
     );
   }
 
-  // void _addSmokeExplosion(Vector2 translate) {
-  //   gameRef.add(
-  //     AnimatedObjectOnce(
-  //       animation: CommonSpriteSheet.smokeExplosion,
-  //       position: position,
-  //       size: Vector2.all(GameUtils.tileSize),
-  //     ),
-  //   );
-  // }
+// void _addSmokeExplosion(Vector2 translate) {
+//   gameRef.add(
+//     AnimatedObjectOnce(
+//       animation: CommonSpriteSheet.smokeExplosion,
+//       position: position,
+//       size: Vector2.all(GameUtils.tileSize),
+//     ),
+//   );
+// }
 }

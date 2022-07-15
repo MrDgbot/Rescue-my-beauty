@@ -350,6 +350,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.8.2"
+  sprung:
+    dependency: "direct main"
+    description:
+      name: sprung
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.0.0"
   stack_trace:
     dependency: transitive
     description:
