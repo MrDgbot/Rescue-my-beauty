@@ -10,7 +10,7 @@ class GameUtils {
   static const double tileSize = 16;
 
   /// 背景颜色
-  static final Color bgColor = Colors.black.withOpacity(0.6);
+  static final Color bgColor = Colors.black.withOpacity(0.9);
 
   /// 是否开启开局相机移动
   static bool isStartCameraMove = false;
@@ -20,6 +20,6 @@ class GameUtils {
 
   /// 转换像素
   static double getSizeByTileSize(double size) {
-    return size * (tileSize / 16);
+    return size * (sTileSize / tileSize);
   }
 }

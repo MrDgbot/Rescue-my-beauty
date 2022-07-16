@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:rescue_my_beauty/common/utils.dart';
 import 'package:rescue_my_beauty/player/enemy_sprite_sheet.dart';
 import 'package:rescue_my_beauty/player/game_sprite_sheet.dart';
-import 'package:rescue_my_beauty/player/nobita/functions.dart';
 
 class Boss extends SimpleEnemy with ObjectCollision {
   final Vector2 initPosition;
@@ -26,8 +25,8 @@ class Boss extends SimpleEnemy with ObjectCollision {
       CollisionConfig(
         collisions: [
           CollisionArea.rectangle(
-            size: Vector2(valueByTileSize(14), valueByTileSize(16)),
-            align: Vector2(valueByTileSize(5), valueByTileSize(11)),
+            size: Vector2(GameUtils.getSizeByTileSize(14), GameUtils.getSizeByTileSize(16)),
+            align: Vector2(GameUtils.getSizeByTileSize(5), GameUtils.getSizeByTileSize(11)),
           ),
         ],
       ),
@@ -126,15 +125,15 @@ class Boss extends SimpleEnemy with ObjectCollision {
   }
 
   @override
-  void receiveDamage(AttackFromEnum attacker, double damage, dynamic id) {
+  void receiveDamage(AttackFromEnum attacker, double damage, dynamic identify) {
     showDamage(
       damage,
       config: TextStyle(
-        fontSize: valueByTileSize(5),
+        fontSize: GameUtils.getSizeByTileSize(5),
         color: Colors.white,
         fontFamily: 'Normal',
       ),
     );
-    super.receiveDamage(attacker, damage, id);
+    super.receiveDamage(attacker, damage, identify);
   }
 }

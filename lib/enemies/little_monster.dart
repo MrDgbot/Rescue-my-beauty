@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:rescue_my_beauty/common/utils.dart';
 import 'package:rescue_my_beauty/player/enemy_sprite_sheet.dart';
 import 'package:rescue_my_beauty/player/game_sprite_sheet.dart';
-import 'package:rescue_my_beauty/player/nobita/functions.dart';
 
 class LittleMonster extends SimpleEnemy with ObjectCollision {
   final Vector2 initPosition;
@@ -22,10 +21,10 @@ class LittleMonster extends SimpleEnemy with ObjectCollision {
         collisions: [
           CollisionArea.rectangle(
             size: Vector2(
-              valueByTileSize(10),
-              valueByTileSize(10),
+              GameUtils.getSizeByTileSize(10),
+              GameUtils.getSizeByTileSize(10),
             ),
-            align: Vector2(valueByTileSize(3), valueByTileSize(4)),
+            align: Vector2(GameUtils.getSizeByTileSize(3), GameUtils.getSizeByTileSize(4)),
           ),
         ],
       ),
@@ -88,7 +87,7 @@ class LittleMonster extends SimpleEnemy with ObjectCollision {
     showDamage(
       damage,
       config: TextStyle(
-        fontSize: valueByTileSize(5),
+        fontSize: GameUtils.getSizeByTileSize(5),
         color: Colors.white,
         fontFamily: 'Normal',
       ),

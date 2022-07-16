@@ -12,8 +12,6 @@ class LocalPlayerController extends StateController<LocalPlayer> {
 
   LocalPlayerController();
 
-  // final SocketManager _socketManager;
-
   @override
   void onReady(LocalPlayer component) {
     life = component.life;
@@ -55,50 +53,29 @@ class LocalPlayerController extends StateController<LocalPlayer> {
     if (action.id == 0 && action.event == ActionEvent.DOWN) {
       _tryExecAttack();
     }
+    if (action.id == 1 && action.event == ActionEvent.DOWN) {
+      _tryExecAttackRange();
+    }
   }
 
   void _tryExecAttack() {
-    if (stamina < 25 || component?.isDead == true) {
+    if (stamina < 10 || component?.isDead == true) {
       return;
     }
-    decrementStamina(25);
-
-    // _socketManager.send(
-    //   'message',
-    //   SocketMessage(
-    //     time: DateTime.now(),
-    //     action: GameActionEnum.ATTACK,
-    //     data: SocketMessageData(
-    //       playerId: component!.id,
-    //       direction: component!.lastDirection,
-    //       position: Offset(
-    //         (component!.position.x / tileSize),
-    //         (component!.position.y / tileSize),
-    //       ),
-    //     ),
-    //   ).toJson(),
-    // );
-
+    decrementStamina(10);
     component?.execAttack();
+    notifyListeners();
+  }
+  void _tryExecAttackRange() {
+    if (stamina < 20 || component?.isDead == true) {
+      return;
+    }
+    decrementStamina(20);
+    component?.actionAttackRange();
+    notifyListeners();
   }
 
   void receiveDamage(double damage, dynamic from) {
-    // _socketManager.send(
-    //   'message',
-    //   SocketMessage(
-    //     time: DateTime.now(),
-    //     action: GameActionEnum.RECEIVED_DAMAGE,
-    //     data: SocketMessageData(
-    //       playerId: component!.id,
-    //       playerIdAttack: from,
-    //       damage: damage,
-    //       position: Offset(
-    //         (component!.position.x / tileSize),
-    //         (component!.position.y / tileSize),
-    //       ),
-    //     ),
-    //   ).toJson(),
-    // );
     notifyListeners();
   }
 
@@ -113,21 +90,6 @@ class LocalPlayerController extends StateController<LocalPlayer> {
   void _sendMove(Direction? direction) {
     if (direction != cDirection) {
       cDirection = direction;
-      // _socketManager.send(
-      //   'message',
-      //   SocketMessage(
-      //     time: DateTime.now(),
-      //     action: GameActionEnum.MOVE,
-      //     data: SocketMessageData(
-      //       playerId: component!.id,
-      //       direction: cDirection,
-      //       position: Offset(
-      //         (component!.x / tileSize),
-      //         (component!.y / tileSize),
-      //       ),
-      //     ),
-      //   ).toJson(),
-      // );
     }
   }
 

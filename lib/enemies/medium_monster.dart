@@ -3,31 +3,30 @@ import 'package:flutter/material.dart';
 import 'package:rescue_my_beauty/common/utils.dart';
 import 'package:rescue_my_beauty/player/enemy_sprite_sheet.dart';
 import 'package:rescue_my_beauty/player/game_sprite_sheet.dart';
-import 'package:rescue_my_beauty/player/nobita/functions.dart';
 
-class MediumMonster extends SimpleEnemy with ObjectCollision{
+class MediumMonster extends SimpleEnemy with ObjectCollision {
   final Vector2 initPosition;
   double attack = 10;
 
   MediumMonster(this.initPosition)
       : super(
-    animation: EnemySpriteSheet.MediumMonsterAnimations(),
-    position: initPosition,
-    size: Vector2.all((GameUtils.sTileSize) * 1),
-    speed: GameUtils.sTileSize / 0.35,
-    life: 100,
-  ) {
+          animation: EnemySpriteSheet.MediumMonsterAnimations(),
+          position: initPosition,
+          size: Vector2.all((GameUtils.sTileSize) * 1),
+          speed: GameUtils.sTileSize / 0.35,
+          life: 100,
+        ) {
     setupCollision(
       CollisionConfig(
         collisions: [
           CollisionArea.rectangle(
             size: Vector2(
-              valueByTileSize(8),
-              valueByTileSize(8),
+              GameUtils.getSizeByTileSize(8),
+              GameUtils.getSizeByTileSize(8),
             ),
             align: Vector2(
-              valueByTileSize(3),
-              valueByTileSize(5),
+              GameUtils.getSizeByTileSize(3),
+              GameUtils.getSizeByTileSize(5),
             ),
           ),
         ],
@@ -85,15 +84,15 @@ class MediumMonster extends SimpleEnemy with ObjectCollision{
   }
 
   @override
-  void receiveDamage(AttackFromEnum attacker, double damage, dynamic id) {
+  void receiveDamage(AttackFromEnum attacker, double damage, dynamic identify) {
     showDamage(
       damage,
       config: TextStyle(
-        fontSize: valueByTileSize(5),
+        fontSize: GameUtils.getSizeByTileSize(5),
         color: Colors.white,
         fontFamily: 'Normal',
       ),
     );
-    super.receiveDamage(attacker, damage, id);
+    super.receiveDamage(attacker, damage, identify);
   }
 }

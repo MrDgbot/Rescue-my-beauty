@@ -1,7 +1,7 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:rescue_my_beauty/common/utils.dart';
+import 'package:rescue_my_beauty/player/game_sprite_sheet.dart';
 import 'package:rescue_my_beauty/player/nobita/local_player_controller.dart';
 import 'package:rescue_my_beauty/player/sprite_sheet_hero.dart';
 import 'package:rescue_my_beauty/topvars.dart';
@@ -10,17 +10,17 @@ class LocalPlayer extends SimplePlayer
     with Lighting, ObjectCollision, UseStateController<LocalPlayerController> {
   final int id;
   final String nick;
+  final SpriteSheet spriteSheet;
 
   static const double _playerRatio = 1.1;
   static final double maxSpeed = GameUtils.sTileSize * 5;
 
   bool lockMove = false;
 
-  LocalPlayer(this.id, this.nick, Vector2 position)
+  LocalPlayer(this.id, this.nick, Vector2 position, this.spriteSheet)
       : super(
           position: position,
-          animation:
-              SpriteSheetHero.animationBySpriteSheet(SpriteSheetHero.hero1),
+          animation: SpriteSheetHero.animationBySpriteSheet(spriteSheet),
           speed: maxSpeed,
           life: 100,
           size: Vector2.all(GameUtils.sTileSize / _playerRatio),
@@ -53,73 +53,84 @@ class LocalPlayer extends SimplePlayer
   bool onCollision(GameComponent component, bool active) {
     bool active = true;
 
-    /// 碰撞 Orc 不发生碰撞
-    // if (component is Orc) {
-    //   debugPrint("碰撞 Orc");
-    //   active = false;
-    // }
+    if (component is FlyingAttackObject &&
+        component.attackFrom == AttackFromEnum.PLAYER_OR_ALLY) {
+      active = false;
+    }
     return active;
   }
 
   /// 操纵手柄操作控制
   @override
   void joystickAction(JoystickActionEvent event) {
-    // if (hasController) {
-    //   controller.joystickAction(event);
-    // }
-    // if (action.id == LogicalKeyboardKey.space.keyId &&
-    //     action.event == ActionEvent.DOWN) {
-    //   _tryExecAttack();
-    // }
-    // if (action.id == 0 && action.event == ActionEvent.DOWN) {
-    //   _tryExecAttack();
-    // }
-    //
-    // /// 死亡 || 锁住移动
-    // if (isDead || lockMove) return;
-    //
-    /// 攻击
-    if ((event.id == LogicalKeyboardKey.space.keyId ||
-            event.id == LogicalKeyboardKey.select.keyId ||
-            event.id == 0) &&
-        event.event == ActionEvent.DOWN) {
-      /// 攻击动画
-      execAttack();
-      // _addAttackAnimation();
-
-      /// 攻击范围
-      // simpleAttackMelee(
-      //   damage: 10,
-      //   size: Vector2.all(GameUtils.sTileSize * 1.5),
-      //   withPush: false,
-      // );
+    if (hasController) {
+      controller.joystickAction(event);
     }
     super.joystickAction(event);
   }
 
-  /// 攻击
+  /// 攻击 移动斧头 存在缺陷，人物碰撞会消失。
+  // void execAttack() {
+  //   final anim = SpriteSheetHero.attackAxe;
+  //   simpleAttackRange(
+  //     id: id,
+  //     animationRight: anim,
+  //     animationLeft: anim,
+  //     animationUp: anim,
+  //     animationDown: anim,
+  //     withCollision: false,
+  //     size: Vector2(GameUtils.tileSize * 2, GameUtils.tileSize * 2),
+  //     collision: CollisionConfig(
+  //       collisions: [
+  //         CollisionArea.rectangle(
+  //           size: Vector2(GameUtils.tileSize * 2, GameUtils.tileSize * 2),
+  //         )
+  //       ],
+  //     ),
+  //     damage: 15,
+  //   );
+  // }
+
   void execAttack() {
-    final anim = SpriteSheetHero.attack_a;
+    final anim = SpriteSheetHero.lightBlade;
     simpleAttackMelee(
       id: id,
       animationLeft: Future.value(anim.createAnimation(row: 1, stepTime: 0.05)),
-      animationRight: Future.value(anim.createAnimation(row: 0, stepTime: 0.05)),
+      animationRight:
+          Future.value(anim.createAnimation(row: 0, stepTime: 0.05)),
       animationUp: Future.value(anim.createAnimation(row: 2, stepTime: 0.05)),
       animationDown: Future.value(anim.createAnimation(row: 3, stepTime: 0.05)),
-      // animationDestroy: SpriteSheetHero.smokeExplosion,
-      size: Vector2.all(GameUtils.tileSize * 4),
-      // speed: speed * 3,
-      damage: 15,
-      // enableDiagonal: false,
-      // collision: CollisionConfig(
-      //   collisions: [
-      //     CollisionArea.rectangle(
-      //       size: Vector2(GameUtils.tileSize * 0.9, GameUtils.tileSize * 0.9),
-      //     )
-      //   ],
-      // ),
+      size: Vector2(GameUtils.tileSize * 2, GameUtils.tileSize * 4),
+      damage: 10,
     );
   }
+
+  void actionAttackRange() {
+    simpleAttackRange(
+      id: id,
+      animationRight: GameSpriteSheet.fireBallAttackRight(),
+      animationLeft: GameSpriteSheet.fireBallAttackLeft(),
+      animationUp: GameSpriteSheet.fireBallAttackTop(),
+      animationDown: GameSpriteSheet.fireBallAttackBottom(),
+      animationDestroy: GameSpriteSheet.fireBallExplosion(),
+      size: Vector2(GameUtils.sTileSize * 0.65, GameUtils.sTileSize * 0.65),
+      damage: 20,
+      speed: maxSpeed * (GameUtils.sTileSize / 36),
+      enableDiagonal: false,
+      collision: CollisionConfig(
+        collisions: [
+          CollisionArea.rectangle(
+              size: Vector2(GameUtils.sTileSize / 2, GameUtils.sTileSize / 2)),
+        ],
+      ),
+      lightingConfig: LightingConfig(
+        radius: GameUtils.sTileSize * 0.9,
+        blurBorder: GameUtils.sTileSize / 2,
+        color: Colors.deepOrangeAccent.withOpacity(0.4),
+      ),
+    );
+  }
+
   /// 移动操纵杆时调用的方法。
   @override
   void joystickChangeDirectional(JoystickDirectionalEvent event) {
@@ -133,6 +144,10 @@ class LocalPlayer extends SimplePlayer
   /// 受伤触发
   @override
   void receiveDamage(AttackFromEnum attacker, double damage, dynamic from) {
+    if (from == id || from == AttackFromEnum.PLAYER_OR_ALLY) {
+      return super.receiveDamage(attacker, damage, from);
+    }
+
     if (!isDead) {
       showDamage(
         damage,
@@ -178,5 +193,4 @@ class LocalPlayer extends SimplePlayer
     removeFromParent();
     super.die();
   }
-
 }

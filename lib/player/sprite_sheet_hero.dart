@@ -7,7 +7,7 @@ class SpriteSheetHero {
   static late SpriteSheet hero2;
   static late SpriteSheet hero3;
   static late SpriteSheet hero4;
-  static late SpriteSheet attack_a;
+  static late SpriteSheet lightBlade;
   // static late SpriteSheet hero5;
   // static late SpriteSheet spriteSheetEmotes;
 
@@ -16,7 +16,7 @@ class SpriteSheetHero {
     hero2 = await _create('player/fat_tiger.png', columns: 4);
     hero3 = await _create('player/doraemon.png', columns: 4);
     hero4 = await _create('player/shizuka.png', columns: 4);
-    attack_a = await _create('attack.png', columns: 5);
+    lightBlade = await _create('attack.png', columns: 5);
     // hero2 = await _create('heroes/hero2.png', columns: 4);
     // hero3 = await _create('heroes/hero3.png', columns: 4);
     // hero4 = await _create('heroes/hero4.png', columns: 4);

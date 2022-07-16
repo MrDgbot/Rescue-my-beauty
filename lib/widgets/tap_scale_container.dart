@@ -86,14 +86,14 @@ class _TapScaleContainerState extends State<TapScaleContainer> {
     if (diff < _kDuration) {
       await Future.delayed(_kDuration - diff);
     }
-    setSafeState(() {
+    safeSetState(() {
       _transform = Matrix4.identity();
     });
   }
 
   _tapStart() {
     _clickTime = DateTime.now();
-    setSafeState(() {
+    safeSetState(() {
       _transform = Matrix4.diagonal3Values(0.92, 0.92, 1);
     });
   }

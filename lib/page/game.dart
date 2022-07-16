@@ -14,6 +14,7 @@ import 'package:rescue_my_beauty/enemies/boss.dart';
 import 'package:rescue_my_beauty/enemies/little_monster.dart';
 import 'package:rescue_my_beauty/enemies/medium_monster.dart';
 import 'package:rescue_my_beauty/player/nobita/local_player.dart';
+import 'package:rescue_my_beauty/player/sprite_sheet_hero.dart';
 import 'package:rescue_my_beauty/rescue_my_beauty_routes.dart';
 import 'package:rescue_my_beauty/topvars.dart';
 import 'package:rescue_my_beauty/widgets/dialogs.dart';
@@ -40,7 +41,6 @@ class _GamePageState extends State<GamePage>
   void initState() {
     WidgetsBinding.instance.addObserver(this);
     _controller = GameController()..addListener(this);
-
     super.initState();
   }
 
@@ -59,6 +59,7 @@ class _GamePageState extends State<GamePage>
           1,
           "野比大雄",
           Vector2(4 * GameUtils.sTileSize, 4 * GameUtils.sTileSize),
+          SpriteSheetHero.hero1,
         ),
         joystick: Joystick(
           keyboardConfig: KeyboardConfig(
@@ -73,8 +74,15 @@ class _GamePageState extends State<GamePage>
               sprite: Sprite.load('joystick_atack.png'),
               spritePressed: Sprite.load('joystick_atack_selected.png'),
               size: 80,
-              margin: EdgeInsets.only(bottom: 50, right: 50),
+              margin: const EdgeInsets.only(bottom: 50, right: 50),
             ),
+            JoystickAction(
+              actionId: 1,
+              sprite: Sprite.load('joystick_atack_range.png'),
+              spritePressed: Sprite.load('joystick_atack_range_selected.png'),
+              size: 50,
+              margin: const EdgeInsets.only(bottom: 50, right: 160),
+            )
           ],
         ),
         map: TiledWorldMap(
@@ -87,14 +95,14 @@ class _GamePageState extends State<GamePage>
             'spikes': (p) => Spikes(p.position, randomDamage: true),
             'potion': (p) => PotionLife(p.position),
             'chest': (p) => Chest(p.position),
-            'monster1':(p)=>LittleMonster(p.position),
-            'monster2':(p)=>MediumMonster(p.position),
+            'monster1': (p) => LittleMonster(p.position),
+            'monster2': (p) => MediumMonster(p.position),
             'boss': (p) => Boss(p.position),
-
           },
         ),
         cameraConfig: CameraConfig(
           smoothCameraEnabled: true,
+          moveOnlyMapArea: true,
           smoothCameraSpeed: 2,
         ),
         initialActiveOverlays: const ['barLife', 'miniMap'],
@@ -120,16 +128,6 @@ class _GamePageState extends State<GamePage>
             ),
           ),
         ),
-        // initialActiveOverlays: const ['miniMap'],
-        // overlayBuilderMap: {
-        //   'miniMap': (context, game) => MiniMap(
-        //         game: game,
-        //         margin: const EdgeInsets.all(10),
-        //         borderRadius: BorderRadius.circular(10),
-        //         size: Vector2.all(min(constraints.maxHeight, constraints.maxWidth) / 4.3),
-        //         border: Border.all(color: Colors.white.withOpacity(0.5)),
-        //       ),
-        // },
       ),
     );
   }

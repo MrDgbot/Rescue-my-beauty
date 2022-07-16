@@ -1,10 +1,24 @@
+import 'dart:async';
+
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rescue_my_beauty/topvars.dart';
 
-extension StateExt on State {
-  setSafeState(VoidCallback cb) {
-    if (mounted) setState(cb);
+extension SafeSetStateExtension on State {
+  /// [setState] when it's not building, then wait until next frame built.
+  FutureOr<void> safeSetState(FutureOr<dynamic> Function() fn) async {
+    await fn();
+    if (mounted &&
+        !context.debugDoingBuild &&
+        context.owner?.debugBuilding == false) {
+      // ignore: invalid_use_of_protected_member
+      setState(() {});
+    }
+    final Completer<void> completer = Completer<void>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      completer.complete();
+    });
+    return completer.future;
   }
 }
 
