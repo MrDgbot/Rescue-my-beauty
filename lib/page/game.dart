@@ -67,13 +67,15 @@ class _GamePageState extends State<GamePage>
             ],
           ),
           directional: JoystickDirectional(),
-          // actions: [
-          //   JoystickAction(
-          //     actionId: 1,
-          //     color: Colors.deepOrange,
-          //     margin: const EdgeInsets.all(65),
-          //   )
-          // ],
+          actions: [
+            JoystickAction(
+              actionId: 0,
+              sprite: Sprite.load('joystick_atack.png'),
+              spritePressed: Sprite.load('joystick_atack_selected.png'),
+              size: 80,
+              margin: EdgeInsets.only(bottom: 50, right: 50),
+            ),
+          ],
         ),
         map: TiledWorldMap(
           'tiles/map.json',

@@ -1,5 +1,6 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:rescue_my_beauty/common/utils.dart';
 import 'package:rescue_my_beauty/player/nobita/local_player_controller.dart';
 import 'package:rescue_my_beauty/player/sprite_sheet_hero.dart';
@@ -77,24 +78,48 @@ class LocalPlayer extends SimplePlayer
     // /// 死亡 || 锁住移动
     // if (isDead || lockMove) return;
     //
-    // /// 攻击
-    // if ((event.id == LogicalKeyboardKey.space.keyId ||
-    //         event.id == LogicalKeyboardKey.select.keyId ||
-    //         event.id == 1) &&
-    //     event.event == ActionEvent.DOWN) {
-    //   /// 攻击动画
-    //   // _addAttackAnimation();
-    //
-    //   /// 攻击范围
-    //   simpleAttackMelee(
-    //     damage: 10,
-    //     size: Vector2.all(tileSize * 1.5),
-    //     withPush: false,
-    //   );
-    // }
+    /// 攻击
+    if ((event.id == LogicalKeyboardKey.space.keyId ||
+            event.id == LogicalKeyboardKey.select.keyId ||
+            event.id == 0) &&
+        event.event == ActionEvent.DOWN) {
+      /// 攻击动画
+      execAttack();
+      // _addAttackAnimation();
+
+      /// 攻击范围
+      // simpleAttackMelee(
+      //   damage: 10,
+      //   size: Vector2.all(GameUtils.sTileSize * 1.5),
+      //   withPush: false,
+      // );
+    }
     super.joystickAction(event);
   }
 
+  /// 攻击
+  void execAttack() {
+    final anim = SpriteSheetHero.attack_a;
+    simpleAttackMelee(
+      id: id,
+      animationLeft: Future.value(anim.createAnimation(row: 1, stepTime: 0.05)),
+      animationRight: Future.value(anim.createAnimation(row: 0, stepTime: 0.05)),
+      animationUp: Future.value(anim.createAnimation(row: 2, stepTime: 0.05)),
+      animationDown: Future.value(anim.createAnimation(row: 3, stepTime: 0.05)),
+      // animationDestroy: SpriteSheetHero.smokeExplosion,
+      size: Vector2.all(GameUtils.tileSize * 4),
+      // speed: speed * 3,
+      damage: 15,
+      // enableDiagonal: false,
+      // collision: CollisionConfig(
+      //   collisions: [
+      //     CollisionArea.rectangle(
+      //       size: Vector2(GameUtils.tileSize * 0.9, GameUtils.tileSize * 0.9),
+      //     )
+      //   ],
+      // ),
+    );
+  }
   /// 移动操纵杆时调用的方法。
   @override
   void joystickChangeDirectional(JoystickDirectionalEvent event) {
@@ -154,27 +179,4 @@ class LocalPlayer extends SimplePlayer
     super.die();
   }
 
-  /// 攻击
-  void execAttack() {
-    final anim = SpriteSheetHero.attackAxe;
-    simpleAttackRange(
-      id: id,
-      animationRight: anim,
-      animationLeft: anim,
-      animationUp: anim,
-      animationDown: anim,
-      animationDestroy: SpriteSheetHero.smokeExplosion,
-      size: Vector2.all(GameUtils.tileSize * 0.9),
-      speed: speed * 3,
-      damage: 15,
-      enableDiagonal: false,
-      collision: CollisionConfig(
-        collisions: [
-          CollisionArea.rectangle(
-            size: Vector2(GameUtils.tileSize * 0.9, GameUtils.tileSize * 0.9),
-          )
-        ],
-      ),
-    );
-  }
 }
