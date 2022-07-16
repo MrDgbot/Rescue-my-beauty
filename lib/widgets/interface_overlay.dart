@@ -30,6 +30,7 @@ class _InterfaceOverlayState extends State<InterfaceOverlay>
   @override
   void initState() {
     widget.gameController.addListener(this);
+    _player = widget.gameController.player as LocalPlayer?;
     super.initState();
   }
 
@@ -46,10 +47,6 @@ class _InterfaceOverlayState extends State<InterfaceOverlay>
           SizedBox(
             width: min(Screen.screenHeight, Screen.screenWidth) / 4.4,
           )
-          // Align(
-          //   alignment: Alignment.topRight,
-          //   child: _buildSettings(context),
-          // )
         ],
       ),
     );
@@ -85,7 +82,9 @@ class _InterfaceOverlayState extends State<InterfaceOverlay>
               alignment: Alignment.centerLeft,
               child: Container(
                 height: 10,
-                width: _sizeBar * (controller.life / controller.maxLife),
+                width: _player?.isDead ?? true
+                    ? 0
+                    : _sizeBar * (controller.life / controller.maxLife),
                 decoration: BoxDecoration(
                   color: Colors.green,
                   borderRadius: BorderRadius.circular(2),
@@ -110,7 +109,9 @@ class _InterfaceOverlayState extends State<InterfaceOverlay>
               alignment: Alignment.centerLeft,
               child: Container(
                 height: 10,
-                width: _sizeBar * (controller.stamina / controller.maxStamina),
+                width: _player?.isDead ?? true
+                    ? 0
+                    : _sizeBar * (controller.stamina / controller.maxStamina),
                 decoration: BoxDecoration(
                   color: Colors.orange,
                   borderRadius: BorderRadius.circular(2),
@@ -134,7 +135,7 @@ class _InterfaceOverlayState extends State<InterfaceOverlay>
             () {
               Navigator.of(context)
                   .pushNamedAndRemoveUntil(
-                      Routes.rescueGamepage, (route) => true)
+                      Routes.rescueGamepage, (route) => false)
                   .whenComplete(
                       () => widget.gameController.gameRef.resumeEngine());
             },
@@ -162,60 +163,6 @@ class _InterfaceOverlayState extends State<InterfaceOverlay>
     );
   }
 
-  // Widget _buildPlayersOn() {
-  //   return Opacity(
-  //     opacity: 0.8,
-  //     child: Container(
-  //       margin: const EdgeInsets.all(10),
-  //       padding: const EdgeInsets.all(10),
-  //       height: 150,
-  //       width: 100,
-  //       decoration: BoxDecoration(
-  //         color: Colors.brown,
-  //         borderRadius: BorderRadius.circular(5),
-  //         border: Border.all(color: Colors.black),
-  //       ),
-  //       child: Column(
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         children: [
-  //           Text(
-  //             'Playes on',
-  //             style: TextStyle(
-  //               color: Colors.white,
-  //               fontSize: 10,
-  //             ),
-  //           ),
-  //           SizedBox(
-  //             height: 5,
-  //           ),
-  //           Container(
-  //             width: 100,
-  //             height: 1,
-  //             color: Colors.white.withOpacity(0.5),
-  //           ),
-  //           SizedBox(
-  //             height: 5,
-  //           ),
-  //           Expanded(
-  //             child: ListView.builder(
-  //               itemCount: nickNames.length,
-  //               itemBuilder: (context, index) {
-  //                 return Text(
-  //                   nickNames[index],
-  //                   style: TextStyle(
-  //                     color: Colors.white,
-  //                     fontSize: 12,
-  //                   ),
-  //                 );
-  //               },
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
-
   @override
   void changeCountLiveEnemies(int count) {}
 
@@ -223,22 +170,6 @@ class _InterfaceOverlayState extends State<InterfaceOverlay>
   void updateGame() {
     if (!mounted) return;
     // _player = widget.gameController.player as LocalPlayer?;
-    // if (_player != null) {
-    //   if (life != _player!.life || stamina != _player!.stamina) {
-    //     setState(() {
-    //       life = _player!.life;
-    //       stamina = _player!.stamina;
-    //     });
-    //   }
-    // }
-    // if (nickNames.length !=
-    //     (widget.gameController.livingEnemies?.length ?? 0)) {
-    //   setState(() {
-    //     nickNames = widget.gameController.livingEnemies?.map((e) {
-    //           return (e as RemotePlayer).nick;
-    //         }).toList() ??
-    //         [];
-    //   });
-    // }
+
   }
 }
