@@ -38,6 +38,18 @@ flutter:
     - assets/images/items/spikes.png
     - assets/images/items/potion_red.png
     - assets/images/items/chest_spriteSheet.png
+    - assets/images/enemy/little_monster/littleMonster_idle_left.png
+    - assets/images/enemy/little_monster/littleMonster_idle.png
+    - assets/images/enemy/little_monster/littleMonster_run_right.png
+    - assets/images/enemy/little_monster/littleMonster_run_left.png
+    - assets/images/enemy/medium_monster/mediumMonster_idle_left.png
+    - assets/images/enemy/medium_monster/mediumMonster_idle.png
+    - assets/images/enemy/medium_monster/mediumMonster_run_right.png
+    - assets/images/enemy/medium_monster/mediumMonster_run_left.png
+    - assets/images/enemy/boss/boss_idle_left.png
+    - assets/images/enemy/boss/boss_idle.png
+    - assets/images/enemy/boss/boss_run_right.png
+    - assets/images/enemy/boss/boss_run_left.png
 
 
   fonts:

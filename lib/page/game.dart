@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rescue_my_beauty/common/screen.dart';
 import 'package:rescue_my_beauty/common/utils.dart';
-import 'package:rescue_my_beauty/decoration/boss.dart';
 import 'package:rescue_my_beauty/decoration/chest.dart';
 import 'package:rescue_my_beauty/decoration/light.dart';
 import 'package:rescue_my_beauty/decoration/potion_life.dart';
 import 'package:rescue_my_beauty/decoration/spikes.dart';
+import 'package:rescue_my_beauty/enemies/boss.dart';
+import 'package:rescue_my_beauty/enemies/little_monster.dart';
+import 'package:rescue_my_beauty/enemies/medium_monster.dart';
 import 'package:rescue_my_beauty/player/nobita/local_player.dart';
 import 'package:rescue_my_beauty/rescue_my_beauty_routes.dart';
 import 'package:rescue_my_beauty/topvars.dart';
@@ -78,11 +80,15 @@ class _GamePageState extends State<GamePage>
           forceTileSize: Size(GameUtils.sTileSize, GameUtils.sTileSize),
           objectsBuilder: {
             'light': (p) => Light(p.position, p.size),
-            'monster': (p) => Boss(p.position, p.size),
-            'boss': (p) => Boss(p.position, p.size, zoom: 3),
+            // 'monster': (p) => Boss(p.position, p.size),
+            // 'boss': (p) => Boss(p.position, p.size, zoom: 3),
             'spikes': (p) => Spikes(p.position, randomDamage: true),
             'potion': (p) => PotionLife(p.position),
             'chest': (p) => Chest(p.position),
+            'monster1':(p)=>LittleMonster(p.position),
+            'monster2':(p)=>MediumMonster(p.position),
+            'boss': (p) => Boss(p.position),
+
           },
         ),
         cameraConfig: CameraConfig(
