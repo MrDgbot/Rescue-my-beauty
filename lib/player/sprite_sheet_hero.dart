@@ -7,6 +7,7 @@ class SpriteSheetHero {
   static late SpriteSheet hero2;
   static late SpriteSheet hero3;
   static late SpriteSheet hero4;
+  static late SpriteSheet attack_a;
   // static late SpriteSheet hero5;
   // static late SpriteSheet spriteSheetEmotes;
 
@@ -15,6 +16,7 @@ class SpriteSheetHero {
     hero2 = await _create('player/fat_tiger.png', columns: 4);
     hero3 = await _create('player/doraemon.png', columns: 4);
     hero4 = await _create('player/shizuka.png', columns: 4);
+    attack_a = await _create('attack.png', columns: 5);
     // hero2 = await _create('heroes/hero2.png', columns: 4);
     // hero3 = await _create('heroes/hero3.png', columns: 4);
     // hero4 = await _create('heroes/hero4.png', columns: 4);
@@ -51,7 +53,52 @@ class SpriteSheetHero {
         ),
       );
 
+  static Future<SpriteAnimation> get attackNew => SpriteAnimation.load(
+        "attack.png",
+        SpriteAnimationData.sequenced(
+          amount: 8,
+          textureSize: Vector2(148, 148),
+          stepTime: 0.05,
+        ),
+      );
+
   static SimpleDirectionAnimation animationBySpriteSheet(
+      SpriteSheet spriteSheet) {
+    const List<double> stillList = [60, 0.001, 60];
+
+    return SimpleDirectionAnimation(
+      idleDown: Future.value(
+        spriteSheet.createAnimationWithVariableStepTimes(
+            row: 0, to: 3, stepTimes: stillList),
+      ),
+      idleLeft: Future.value(
+        spriteSheet.createAnimationWithVariableStepTimes(
+            row: 1, to: 3, stepTimes: stillList),
+      ),
+      idleRight: Future.value(
+        spriteSheet.createAnimationWithVariableStepTimes(
+            row: 2, to: 3, stepTimes: stillList),
+      ),
+      idleUp: Future.value(
+        spriteSheet.createAnimationWithVariableStepTimes(
+            row: 3, to: 3, stepTimes: stillList),
+      ),
+      runDown: Future.value(
+        spriteSheet.createAnimation(row: 0, stepTime: 0.1),
+      ),
+      runLeft: Future.value(
+        spriteSheet.createAnimation(row: 1, stepTime: 0.1),
+      ),
+      runRight: Future.value(
+        spriteSheet.createAnimation(row: 2, stepTime: 0.1),
+      ),
+      runUp: Future.value(
+        spriteSheet.createAnimation(row: 3, stepTime: 0.1),
+      ),
+    );
+  }
+
+  static SimpleDirectionAnimation animationBySpriteSheetTest(
       SpriteSheet spriteSheet) {
     const List<double> stillList = [60, 0.001, 60];
 
