@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:rescue_my_beauty/rescue_my_beauty_routes.dart';
 import 'package:rescue_my_beauty/topvars.dart';
@@ -19,13 +21,7 @@ class Dialogs {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  Text(
-                    "游 戏 结 束",
-                    style: textStyle24B.copyWith(
-                      color: Colors.orangeAccent,
-                      fontSize: 52,
-                    ),
-                  ),
+                  buildGameText('游戏结束'),
                   Wrap(
                     spacing: 25,
                     direction: Axis.vertical,
@@ -63,13 +59,7 @@ class Dialogs {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                Text(
-                  "游 戏 暂 停",
-                  style: textStyle24B.copyWith(
-                    color: Colors.orangeAccent,
-                    fontSize: 52,
-                  ),
-                ),
+                buildGameText('游戏暂停'),
                 Wrap(
                   spacing: 25,
                   direction: Axis.vertical,
@@ -84,10 +74,33 @@ class Dialogs {
     );
   }
 
+  static Widget buildGameText(String text, {double? fontSize}) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Text(
+          text.split('').join(' '),
+          style: textStyle24B.copyWith(
+            color: Colors.orangeAccent,
+            fontSize: fontSize ?? 58,
+            shadows: List.generate(
+              8,
+              (index) => Shadow(
+                color: Colors.white,
+                offset: Offset.fromDirection(pi / 4 * index),
+                blurRadius: 4,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   static Widget menuItem(String text, VoidCallback onTap) {
     return TapScaleContainer(
       onTap: onTap,
-      child: Text(text, style: textStyle20),
+      child: Text(text, style: textStyle24B),
     );
   }
 }

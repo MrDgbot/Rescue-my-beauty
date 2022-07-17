@@ -170,6 +170,5 @@ class _InterfaceOverlayState extends State<InterfaceOverlay>
   void updateGame() {
     if (!mounted) return;
     // _player = widget.gameController.player as LocalPlayer?;
-
   }
 }

@@ -25,8 +25,10 @@ class Boss extends SimpleEnemy with ObjectCollision {
       CollisionConfig(
         collisions: [
           CollisionArea.rectangle(
-            size: Vector2(GameUtils.getSizeByTileSize(14), GameUtils.getSizeByTileSize(16)),
-            align: Vector2(GameUtils.getSizeByTileSize(5), GameUtils.getSizeByTileSize(11)),
+            size: Vector2(GameUtils.getSizeByTileSize(14),
+                GameUtils.getSizeByTileSize(16)),
+            align: Vector2(GameUtils.getSizeByTileSize(5),
+                GameUtils.getSizeByTileSize(11)),
           ),
         ],
       ),

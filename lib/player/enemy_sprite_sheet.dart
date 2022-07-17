@@ -117,6 +117,7 @@ class EnemySpriteSheet {
           ),
         ),
       );
+
   /// MiniBoss 动画
   static SimpleDirectionAnimation miniBossAnimations() =>
       SimpleDirectionAnimation(

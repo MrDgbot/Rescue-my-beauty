@@ -22,4 +22,9 @@ class GameUtils {
   static double getSizeByTileSize(double size) {
     return size * (sTileSize / tileSize);
   }
+
+  /// 转换像素
+  static double getRandomDamage(double size) {
+    return size * (sTileSize / tileSize);
+  }
 }

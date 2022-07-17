@@ -60,7 +60,7 @@ class _GamePageState extends State<GamePage>
           1,
           "野比大雄",
           Vector2(4 * GameUtils.sTileSize, 4 * GameUtils.sTileSize),
-          SpriteSheetHero.hero1,
+          SpriteSheetHero.hero5,
         ),
         joystick: Joystick(
           keyboardConfig: KeyboardConfig(

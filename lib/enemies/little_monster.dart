@@ -24,7 +24,8 @@ class LittleMonster extends SimpleEnemy with ObjectCollision {
               GameUtils.getSizeByTileSize(10),
               GameUtils.getSizeByTileSize(10),
             ),
-            align: Vector2(GameUtils.getSizeByTileSize(3), GameUtils.getSizeByTileSize(4)),
+            align: Vector2(
+                GameUtils.getSizeByTileSize(3), GameUtils.getSizeByTileSize(4)),
           ),
         ],
       ),

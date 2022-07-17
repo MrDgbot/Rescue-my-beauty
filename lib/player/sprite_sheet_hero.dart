@@ -8,7 +8,7 @@ class SpriteSheetHero {
   static late SpriteSheet hero3;
   static late SpriteSheet hero4;
   static late SpriteSheet lightBlade;
-  // static late SpriteSheet hero5;
+  static late SpriteSheet hero5;
   // static late SpriteSheet spriteSheetEmotes;
 
   static load() async {
@@ -16,6 +16,7 @@ class SpriteSheetHero {
     hero2 = await _create('player/fat_tiger.png', columns: 4);
     hero3 = await _create('player/doraemon.png', columns: 4);
     hero4 = await _create('player/shizuka.png', columns: 4);
+    hero5 = await _create('player/no.png', columns: 4);
     lightBlade = await _create('attack.png', columns: 5);
     // hero2 = await _create('heroes/hero2.png', columns: 4);
     // hero3 = await _create('heroes/hero3.png', columns: 4);
@@ -59,6 +60,49 @@ class SpriteSheetHero {
           amount: 8,
           textureSize: Vector2(148, 148),
           stepTime: 0.05,
+        ),
+      );
+
+  static Future<SpriteAnimation> get attackNO => SpriteAnimation.load(
+        "player/no_attack.png",
+        SpriteAnimationData.sequenced(
+          amount: 4,
+          textureSize: Vector2(240, 240),
+          stepTime: 0.2,
+        ),
+      );
+
+  static Future<SpriteAnimation> attackEffectBottom() => SpriteAnimation.load(
+        'player/atack_effect_bottom.png',
+        SpriteAnimationData.sequenced(
+          amount: 6,
+          stepTime: 0.1,
+          textureSize: Vector2(16, 16),
+        ),
+      );
+
+  static Future<SpriteAnimation> attackEffectLeft() => SpriteAnimation.load(
+        'player/atack_effect_left.png',
+        SpriteAnimationData.sequenced(
+          amount: 6,
+          stepTime: 0.1,
+          textureSize: Vector2(16, 16),
+        ),
+      );
+  static Future<SpriteAnimation> attackEffectRight() => SpriteAnimation.load(
+        'player/atack_effect_right.png',
+        SpriteAnimationData.sequenced(
+          amount: 6,
+          stepTime: 0.1,
+          textureSize: Vector2(16, 16),
+        ),
+      );
+  static Future<SpriteAnimation> attackEffectTop() => SpriteAnimation.load(
+        'player/atack_effect_top.png',
+        SpriteAnimationData.sequenced(
+          amount: 6,
+          stepTime: 0.1,
+          textureSize: Vector2(16, 16),
         ),
       );
 

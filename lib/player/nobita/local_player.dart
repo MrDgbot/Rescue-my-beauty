@@ -92,17 +92,26 @@ class LocalPlayer extends SimplePlayer
   // }
 
   void execAttack() {
-    final anim = SpriteSheetHero.lightBlade;
+    // final anim = SpriteSheetHero.lightBlade;
     simpleAttackMelee(
       id: id,
-      animationLeft: Future.value(anim.createAnimation(row: 1, stepTime: 0.05)),
-      animationRight:
-          Future.value(anim.createAnimation(row: 0, stepTime: 0.05)),
-      animationUp: Future.value(anim.createAnimation(row: 2, stepTime: 0.05)),
-      animationDown: Future.value(anim.createAnimation(row: 3, stepTime: 0.05)),
-      size: Vector2(GameUtils.tileSize * 2, GameUtils.tileSize * 4),
       damage: 10,
+      animationDown: SpriteSheetHero.attackEffectBottom(),
+      animationLeft: SpriteSheetHero.attackEffectLeft(),
+      animationRight: SpriteSheetHero.attackEffectRight(),
+      animationUp: SpriteSheetHero.attackEffectTop(),
+      size: Vector2(GameUtils.tileSize * 2, GameUtils.tileSize * 4),
     );
+    // simpleAttackMelee(
+    //   id: id,
+    //   animationLeft: Future.value(anim.createAnimation(row: 1, stepTime: 0.05)),
+    //   animationRight:
+    //       Future.value(anim.createAnimation(row: 0, stepTime: 0.05)),
+    //   animationUp: Future.value(anim.createAnimation(row: 2, stepTime: 0.05)),
+    //   animationDown: Future.value(anim.createAnimation(row: 3, stepTime: 0.05)),
+    //   size: Vector2(GameUtils.tileSize * 2, GameUtils.tileSize * 4),
+    //   damage: 10,
+    // );
   }
 
   void actionAttackRange() {

@@ -7,31 +7,6 @@ class Sounds {
     await FlameAudio.audioCache.loadAll(['bgm3.mp3']);
   }
 
-  // static void attackPlayerMelee() {
-  //   if (kIsWeb) return;
-  //   FlameAudio.play('attack_player.mp3', volume: 0.4);
-  // }
-
-  // static void attackRange() {
-  //   if (kIsWeb) return;
-  //   FlameAudio.play('attack_fire_ball.wav', volume: 0.3);
-  // }
-
-  // static void attackEnemyMelee() {
-  //   if (kIsWeb) return;
-  //   FlameAudio.play('attack_enemy.mp3', volume: 0.4);
-  // }
-
-  // static void explosion() {
-  //   if (kIsWeb) return;
-  //   FlameAudio.play('explosion.wav');
-  // }
-
-  // static void interaction() {
-  //   if (kIsWeb) return;
-  //   FlameAudio.play('sound_interaction.wav', volume: 0.4);
-  // }
-
   static stopBackgroundSound() {
     if (kIsWeb) return;
     return FlameAudio.bgm.stop();
@@ -41,7 +16,7 @@ class Sounds {
     if (kIsWeb) return;
     await FlameAudio.bgm
         .stop()
-        .then((value) => FlameAudio.bgm.play('bgm3.mp3'));
+        .whenComplete(() => FlameAudio.bgm.play('bgm3.mp3'));
   }
 
   // static void playBackgroundBoosSound() {
@@ -63,4 +38,29 @@ class Sounds {
     if (kIsWeb) return;
     FlameAudio.bgm.dispose();
   }
+
+// static void attackPlayerMelee() {
+//   if (kIsWeb) return;
+//   FlameAudio.play('attack_player.mp3', volume: 0.4);
+// }
+
+// static void attackRange() {
+//   if (kIsWeb) return;
+//   FlameAudio.play('attack_fire_ball.wav', volume: 0.3);
+// }
+
+// static void attackEnemyMelee() {
+//   if (kIsWeb) return;
+//   FlameAudio.play('attack_enemy.mp3', volume: 0.4);
+// }
+
+// static void explosion() {
+//   if (kIsWeb) return;
+//   FlameAudio.play('explosion.wav');
+// }
+
+// static void interaction() {
+//   if (kIsWeb) return;
+//   FlameAudio.play('sound_interaction.wav', volume: 0.4);
+// }
 }

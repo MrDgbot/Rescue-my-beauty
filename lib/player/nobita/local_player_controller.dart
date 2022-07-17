@@ -62,10 +62,12 @@ class LocalPlayerController extends StateController<LocalPlayer> {
     if (stamina < 10 || component?.isDead == true) {
       return;
     }
+
     decrementStamina(10);
     component?.execAttack();
     notifyListeners();
   }
+
   void _tryExecAttackRange() {
     if (stamina < 20 || component?.isDead == true) {
       return;

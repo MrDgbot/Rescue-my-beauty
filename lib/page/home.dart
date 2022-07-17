@@ -3,7 +3,9 @@ import 'dart:async' as async;
 import 'package:bonfire/bonfire.dart';
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flame_splash_screen/flame_splash_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:rescue_my_beauty/common/sounds.dart';
 import 'package:rescue_my_beauty/player/sprite_sheet_hero.dart';
 import 'package:rescue_my_beauty/rescue_my_beauty_routes.dart';
 
@@ -33,9 +35,11 @@ class _HomePageState extends State<HomePage> {
       SpriteSheetHero.hero3,
       SpriteSheetHero.hero4,
     ];
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    //   Sounds.playBackgroundSound();
-    // });
+    if (!kDebugMode) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        Sounds.playBackgroundSound();
+      });
+    }
   }
 
   @override
@@ -128,7 +132,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    // Sounds.stopBackgroundSound();
+    Sounds.stopBackgroundSound();
     _timer.cancel();
     super.dispose();
   }
