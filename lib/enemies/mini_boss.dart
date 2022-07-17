@@ -85,7 +85,7 @@ class MiniBoss extends SimpleEnemy with ObjectCollision {
       animationDestroy: GameSpriteSheet.fireBallExplosion(),
       size: Vector2.all(GameUtils.sTileSize * 0.65),
       damage: attack,
-      speed: this.speed * (GameUtils.sTileSize / 32),
+      speed: speed * (GameUtils.sTileSize / 32),
       collision: CollisionConfig(
         collisions: [
           CollisionArea.rectangle(
@@ -114,7 +114,7 @@ class MiniBoss extends SimpleEnemy with ObjectCollision {
   }
 
   @override
-  void receiveDamage(AttackFromEnum attacker, double damage, dynamic id) {
+  void receiveDamage(AttackFromEnum attacker, double damage, dynamic identify) {
     showDamage(
       damage,
       config: TextStyle(
@@ -123,6 +123,6 @@ class MiniBoss extends SimpleEnemy with ObjectCollision {
         fontFamily: 'Normal',
       ),
     );
-    super.receiveDamage(attacker, damage, id);
+    super.receiveDamage(attacker, damage, identify);
   }
 }

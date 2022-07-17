@@ -82,7 +82,7 @@ class EnemySpriteSheet {
       );
 
   /// 中型怪兽 动画
-  static SimpleDirectionAnimation MediumMonsterAnimations() =>
+  static SimpleDirectionAnimation mediumMonsterAnimations() =>
       SimpleDirectionAnimation(
         idleLeft: SpriteAnimation.load(
           'enemy/medium_monster/mediumMonster_idle_left.png',
