@@ -34,7 +34,9 @@ flutter:
     - assets/images/
     - assets/images/emotes/
     - assets/images/enemy/
+    - assets/images/joystick/
     - assets/images/enemy/boss/
+    - assets/images/enemy/mini_boss/
     - assets/images/enemy/little_monster/
     - assets/images/enemy/medium_monster/
     - assets/images/items/

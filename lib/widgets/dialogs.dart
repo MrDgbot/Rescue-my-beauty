@@ -27,7 +27,7 @@ class Dialogs {
                     ),
                   ),
                   Wrap(
-                    spacing: 20,
+                    spacing: 25,
                     direction: Axis.vertical,
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
@@ -71,7 +71,7 @@ class Dialogs {
                   ),
                 ),
                 Wrap(
-                  spacing: 20,
+                  spacing: 25,
                   direction: Axis.vertical,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: playAgain,

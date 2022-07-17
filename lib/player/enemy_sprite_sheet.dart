@@ -82,7 +82,6 @@ class EnemySpriteSheet {
       );
 
   /// 中型怪兽 动画
-  // ignore: non_constant_identifier_names
   static SimpleDirectionAnimation MediumMonsterAnimations() =>
       SimpleDirectionAnimation(
         idleLeft: SpriteAnimation.load(
@@ -115,6 +114,42 @@ class EnemySpriteSheet {
             amount: 4,
             stepTime: 0.1,
             textureSize: Vector2(16, 16),
+          ),
+        ),
+      );
+  /// MiniBoss 动画
+  static SimpleDirectionAnimation miniBossAnimations() =>
+      SimpleDirectionAnimation(
+        idleLeft: SpriteAnimation.load(
+          'enemy/mini_boss/mini_boss_idle_left.png',
+          SpriteAnimationData.sequenced(
+            amount: 4,
+            stepTime: 0.1,
+            textureSize: Vector2(16, 24),
+          ),
+        ),
+        idleRight: SpriteAnimation.load(
+          'enemy/mini_boss/mini_boss_idle.png',
+          SpriteAnimationData.sequenced(
+            amount: 4,
+            stepTime: 0.1,
+            textureSize: Vector2(16, 24),
+          ),
+        ),
+        runLeft: SpriteAnimation.load(
+          'enemy/mini_boss/mini_boss_run_left.png',
+          SpriteAnimationData.sequenced(
+            amount: 4,
+            stepTime: 0.1,
+            textureSize: Vector2(16, 24),
+          ),
+        ),
+        runRight: SpriteAnimation.load(
+          'enemy/mini_boss/mini_boss_run_right.png',
+          SpriteAnimationData.sequenced(
+            amount: 4,
+            stepTime: 0.1,
+            textureSize: Vector2(16, 24),
           ),
         ),
       );

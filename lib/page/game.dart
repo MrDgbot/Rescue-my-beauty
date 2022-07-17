@@ -13,6 +13,7 @@ import 'package:rescue_my_beauty/decoration/spikes.dart';
 import 'package:rescue_my_beauty/enemies/boss.dart';
 import 'package:rescue_my_beauty/enemies/little_monster.dart';
 import 'package:rescue_my_beauty/enemies/medium_monster.dart';
+import 'package:rescue_my_beauty/enemies/mini_boss.dart';
 import 'package:rescue_my_beauty/player/nobita/local_player.dart';
 import 'package:rescue_my_beauty/player/sprite_sheet_hero.dart';
 import 'package:rescue_my_beauty/rescue_my_beauty_routes.dart';
@@ -67,19 +68,24 @@ class _GamePageState extends State<GamePage>
               LogicalKeyboardKey.space,
             ],
           ),
-          directional: JoystickDirectional(),
+          directional: JoystickDirectional(
+            spriteBackgroundDirectional: Sprite.load('joystick/background.png'),
+            spriteKnobDirectional: Sprite.load('joystick/knob.png'),
+            size: 100,
+            isFixed: false,
+          ),
           actions: [
             JoystickAction(
               actionId: 0,
-              sprite: Sprite.load('joystick_atack.png'),
-              spritePressed: Sprite.load('joystick_atack_selected.png'),
+              sprite: Sprite.load('joystick/atack.png'),
+              spritePressed: Sprite.load('joystick/atack_selected.png'),
               size: 80,
               margin: const EdgeInsets.only(bottom: 50, right: 50),
             ),
             JoystickAction(
               actionId: 1,
-              sprite: Sprite.load('joystick_atack_range.png'),
-              spritePressed: Sprite.load('joystick_atack_range_selected.png'),
+              sprite: Sprite.load('joystick/atack_range.png'),
+              spritePressed: Sprite.load('joystick/atack_range_selected.png'),
               size: 50,
               margin: const EdgeInsets.only(bottom: 50, right: 160),
             )
@@ -90,11 +96,10 @@ class _GamePageState extends State<GamePage>
           forceTileSize: Size(GameUtils.sTileSize, GameUtils.sTileSize),
           objectsBuilder: {
             'light': (p) => Light(p.position, p.size),
-            // 'monster': (p) => Boss(p.position, p.size),
-            // 'boss': (p) => Boss(p.position, p.size, zoom: 3),
+            'chest': (p) => Chest(p.position),
+            'mini_boss': (p) => MiniBoss(p.position),
             'spikes': (p) => Spikes(p.position, randomDamage: true),
             'potion': (p) => PotionLife(p.position),
-            'chest': (p) => Chest(p.position),
             'monster1': (p) => LittleMonster(p.position),
             'monster2': (p) => MediumMonster(p.position),
             'boss': (p) => Boss(p.position),
@@ -138,7 +143,7 @@ class _GamePageState extends State<GamePage>
       return;
     }
     Future.delayed(const Duration(milliseconds: 500), () {
-      final enemy = game.decorations().firstWhere((e) => e is Boss);
+      final enemy = game.enemies().firstWhere((e) => e is Boss);
       game.startScene(
         [
           CameraSceneAction.target(game.player, zoom: 0.3),

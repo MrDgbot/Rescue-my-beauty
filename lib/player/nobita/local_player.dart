@@ -79,6 +79,7 @@ class LocalPlayer extends SimplePlayer
   //     animationUp: anim,
   //     animationDown: anim,
   //     withCollision: false,
+  //     damage: 15,
   //     size: Vector2(GameUtils.tileSize * 2, GameUtils.tileSize * 2),
   //     collision: CollisionConfig(
   //       collisions: [
@@ -87,7 +88,6 @@ class LocalPlayer extends SimplePlayer
   //         )
   //       ],
   //     ),
-  //     damage: 15,
   //   );
   // }
 
