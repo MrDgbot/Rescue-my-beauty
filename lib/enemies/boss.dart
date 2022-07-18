@@ -34,8 +34,8 @@ class Boss extends SimpleEnemy with ObjectCollision, Lighting {
       CollisionConfig(
         collisions: [
           CollisionArea.rectangle(
-            size: Vector2(GameUtils.sTileSize * 3, GameUtils.sTileSize * 3),
-            align: Vector2(0, 0),
+            size: Vector2(GameUtils.sTileSize * 1.9, GameUtils.sTileSize * 2.2),
+            align: Vector2(width*0.2, height*0.25),
           ),
         ],
       ),

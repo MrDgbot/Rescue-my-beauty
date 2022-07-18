@@ -13,7 +13,6 @@ class StorageUtil {
 
   static Future<void> init() async {
     _sharedPreferences = await SharedPreferences.getInstance();
-    _sharedPreferences.clear();
   }
 
   static Future<bool> setJSON(String key, dynamic jsonVal) {
