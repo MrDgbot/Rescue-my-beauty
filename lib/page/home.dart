@@ -108,6 +108,7 @@ class _HomePageState extends State<HomePage> {
 
   /// 开始游戏
   _doPlay(BuildContext context, {bool? isRestart}) {
+    Navigator.of(context).pop();
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => GamePage(

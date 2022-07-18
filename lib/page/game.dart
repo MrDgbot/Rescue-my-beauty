@@ -90,7 +90,7 @@ class _GamePageState extends State<GamePage>
             spriteBackgroundDirectional: Sprite.load('joystick/background.png'),
             spriteKnobDirectional: Sprite.load('joystick/knob.png'),
             size: 100,
-            isFixed: false,
+            isFixed: true,
           ),
           actions: [
             JoystickAction(
@@ -127,8 +127,8 @@ class _GamePageState extends State<GamePage>
         ),
         cameraConfig: CameraConfig(
           smoothCameraEnabled: true,
-          moveOnlyMapArea: true,
-          smoothCameraSpeed: 2,
+          moveOnlyMapArea: false,
+          smoothCameraSpeed: Screen.getRatio * 6,
         ),
         initialActiveOverlays: const ['barLife', 'miniMap'],
         overlayBuilderMap: {
@@ -162,12 +162,12 @@ class _GamePageState extends State<GamePage>
     if (!GameUtils.isStartCameraMove) {
       return;
     }
-    Future.delayed(const Duration(milliseconds: 300), () {
+    Future.delayed(const Duration(milliseconds: 200), () {
       final enemy = game.enemies().firstWhere((e) => e is Boss);
       game.startScene([
         CameraSceneAction.target(game.player, zoom: 0.3),
         CameraSceneAction.target(enemy, zoom: 0.3),
-        DelaySceneAction(const Duration(milliseconds: 1000)),
+        DelaySceneAction(const Duration(milliseconds: 500)),
         CameraSceneAction.target(game.player, zoom: 0.7),
         CameraSceneAction.target(game.player, zoom: 1),
       ]);
@@ -193,7 +193,7 @@ class _GamePageState extends State<GamePage>
 
   @override
   void updateGame() {
-    if (_controller.player != null && _controller.player?.isDead == true) {
+    if (_controller.player?.isDead == true) {
       if (!_showGameOver) {
         _showGameOver = true;
         _showDialogGameOver();

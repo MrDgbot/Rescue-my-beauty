@@ -577,49 +577,13 @@
                  "class":"",
                  "ellipse":true,
                  "height":0,
-                 "id":119,
-                 "name":"light",
-                 "rotation":0,
-                 "visible":true,
-                 "width":0,
-                 "x":767,
-                 "y":721
-                }, 
-                {
-                 "class":"",
-                 "ellipse":true,
-                 "height":0,
-                 "id":120,
-                 "name":"light",
-                 "rotation":0,
-                 "visible":true,
-                 "width":0,
-                 "x":838.666666666667,
-                 "y":723.666666666667
-                }, 
-                {
-                 "class":"",
-                 "ellipse":true,
-                 "height":0,
-                 "id":121,
-                 "name":"light",
-                 "rotation":0,
-                 "visible":true,
-                 "width":0,
-                 "x":839.333333333333,
-                 "y":760.666666666667
-                }, 
-                {
-                 "class":"",
-                 "ellipse":true,
-                 "height":0,
                  "id":122,
                  "name":"light",
                  "rotation":0,
                  "visible":true,
                  "width":0,
-                 "x":769.666666666667,
-                 "y":762.666666666667
+                 "x":809.166666666667,
+                 "y":763.416666666667
                 }, 
                 {
                  "class":"",
@@ -630,8 +594,8 @@
                  "rotation":0,
                  "visible":true,
                  "width":0,
-                 "x":662.333333333333,
-                 "y":765.666666666667
+                 "x":703.583333333333,
+                 "y":777.166666666667
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -974,8 +938,8 @@
                  "rotation":0,
                  "visible":true,
                  "width":18,
-                 "x":686.667,
-                 "y":674
+                 "x":279.667,
+                 "y":846
                 }, 
                 {
                  "class":"",

@@ -15,7 +15,7 @@ class MiniBoss extends SimpleEnemy with ObjectCollision {
           position: initPosition,
           size: Vector2(GameUtils.sTileSize * 0.68, GameUtils.sTileSize * 0.93),
           speed: GameUtils.sTileSize / 0.35,
-          life: 150,
+          life: 120,
         ) {
     setupCollision(
       CollisionConfig(
@@ -48,17 +48,17 @@ class MiniBoss extends SimpleEnemy with ObjectCollision {
           closePlayer: (player) {
             execAttack();
           },
-          radiusVision: GameUtils.sTileSize * 3,
+          radiusVision: GameUtils.sTileSize * 2,
         );
       },
-      radiusVision: GameUtils.sTileSize * 3,
+      radiusVision: GameUtils.sTileSize * 2,
     );
     if (!_seePlayerClose) {
       seeAndMoveToAttackRange(
         positioned: (p) {
           execAttackRange();
         },
-        radiusVision: GameUtils.sTileSize * 5,
+        radiusVision: GameUtils.sTileSize * 3,
       );
     }
   }
@@ -120,7 +120,6 @@ class MiniBoss extends SimpleEnemy with ObjectCollision {
       config: TextStyle(
         fontSize: GameUtils.getSizeByTileSize(5),
         color: Colors.white,
-        fontFamily: 'Normal',
       ),
     );
     super.receiveDamage(attacker, damage, identify);

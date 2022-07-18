@@ -14,7 +14,7 @@ class Spikes extends GameDecoration with Sensor {
             position: position,
             size: Vector2(GameUtils.sTileSize, GameUtils.sTileSize)) {
     setupSensorArea(
-      intervalCheck: 80,
+      intervalCheck: 250,
     );
   }
 

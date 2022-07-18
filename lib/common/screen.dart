@@ -18,6 +18,8 @@ class Screen {
   static final double statusBarHeight = safePadding.top;
   static final double navBarHeight = safePadding.bottom;
   static final bool isTablet = screenSize.shortestSide >= 600;
+  static final double getRatio =
+      (screenWidth > screenHeight ? screenHeight : screenWidth) / 375;
 
   const Screen._();
 

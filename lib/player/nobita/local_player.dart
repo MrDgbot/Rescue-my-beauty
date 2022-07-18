@@ -1,5 +1,6 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
+import 'package:rescue_my_beauty/common/screen.dart';
 import 'package:rescue_my_beauty/common/utils.dart';
 import 'package:rescue_my_beauty/player/game_sprite_sheet.dart';
 import 'package:rescue_my_beauty/player/nobita/local_player_controller.dart';
@@ -14,7 +15,7 @@ class LocalPlayer extends SimplePlayer
   bool containKey = false;
 
   static const double _playerRatio = 1.1;
-  static final double maxSpeed = GameUtils.sTileSize * 4.6;
+  static final double maxSpeed = GameUtils.sTileSize * (Screen.getRatio + 2.4);
 
   bool lockMove = false;
 
@@ -140,7 +141,7 @@ class LocalPlayer extends SimplePlayer
   /// 操纵手柄操作控制
   @override
   void joystickAction(JoystickActionEvent event) {
-    if (lockMove) return;
+    if (lockMove || isDead) return;
     if (hasController) {
       controller.joystickAction(event);
     }
@@ -170,15 +171,12 @@ class LocalPlayer extends SimplePlayer
         initVelocityTop: -10,
         config: textStyleNum.copyWith(color: Colors.amberAccent),
       );
-      lockMove = true;
 
       /// 屏幕变红
       gameRef.lighting
           ?.animateToColor(const Color(0xFF630000).withOpacity(0.7));
       Future.delayed(const Duration(milliseconds: 300), () {
         if (!isDead) {
-          idle();
-          lockMove = false;
           gameRef.lighting?.animateToColor(GameUtils.bgColor);
         }
       });

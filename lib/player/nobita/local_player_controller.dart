@@ -2,7 +2,6 @@ import 'dart:math';
 import 'dart:async' as async;
 
 import 'package:bonfire/bonfire.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:rescue_my_beauty/enemies/little_monster.dart';
 import 'local_player.dart';
@@ -31,32 +30,24 @@ class LocalPlayerController extends StateController<LocalPlayer> {
     life = component.life;
     if (component.isDead == false) {
       _verifyStamina(dt, component);
-    }
-    if (!component.lockMove) {
       _enemyOrcCreate(component.position);
     }
+
   }
 
   /// 敌对生物生成 Orc
   void _enemyOrcCreate(Vector2 p) {
     /// 延迟
     if (_timerEnemyOrc == null) {
-      _timerEnemyOrc = async.Timer(const Duration(seconds: 8), () {
+      _timerEnemyOrc = async.Timer(const Duration(seconds: 5), () {
         _timerEnemyOrc = null;
       });
     } else {
       return;
     }
-
-    debugPrint("怪物数量：${gameRef.enemies().length}");
-    if (gameRef.enemies().length >= 30) return;
+    if (gameRef.enemies().length >= 18) return;
 
     /// 生成
-    gameRef.add(
-      LittleMonster(
-        p + p * Random().nextDouble() * 2,
-      ),
-    );
     gameRef.add(
       LittleMonster(
         p + p * Random().nextDouble() * 2,
