@@ -1,6 +1,15 @@
 import 'package:bonfire/bonfire.dart';
 
 class GameSpriteSheet {
+  static Future<SpriteAnimation> openTheDoor() => SpriteAnimation.load(
+        'items/door_open.png',
+        SpriteAnimationData.sequenced(
+          amount: 14,
+          stepTime: 0.1,
+          textureSize: Vector2(32, 32),
+        ),
+      );
+
   static Future<SpriteAnimation> spikes() => SpriteAnimation.load(
         'items/spikes.png',
         SpriteAnimationData.sequenced(

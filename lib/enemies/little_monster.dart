@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 import 'package:rescue_my_beauty/common/utils.dart';
@@ -33,6 +35,18 @@ class LittleMonster extends SimpleEnemy with ObjectCollision {
   }
 
   @override
+  bool onCollision(GameComponent component, bool active) {
+    if (component is TileWithCollision) {
+      final Vector2 position = component.position - initPosition;
+      if (max(position.x, position.y).abs() < GameUtils.sTileSize / 1.6) {
+        die();
+      }
+    }
+
+    return super.onCollision(component, active);
+  }
+
+  @override
   void render(Canvas canvas) {
     drawDefaultLifeBar(
       canvas,
@@ -49,7 +63,7 @@ class LittleMonster extends SimpleEnemy with ObjectCollision {
       closePlayer: (player) {
         execAttack();
       },
-      radiusVision: (GameUtils.tileSize) * 8,
+      radiusVision: (GameUtils.sTileSize) * 3,
     );
   }
 

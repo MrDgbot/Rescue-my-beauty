@@ -6,8 +6,9 @@ import 'package:flame_splash_screen/flame_splash_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rescue_my_beauty/common/sounds.dart';
+import 'package:rescue_my_beauty/common/storage.dart';
+import 'package:rescue_my_beauty/page/game.dart';
 import 'package:rescue_my_beauty/player/sprite_sheet_hero.dart';
-import 'package:rescue_my_beauty/rescue_my_beauty_routes.dart';
 
 @FFRoute(
   name: "rescue://homepage",
@@ -21,10 +22,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool showSplash = true;
-  int currentPosition = 0;
+  bool _showSplash = !StorageUtil.getBool('isSplash');
+  int _currentPosition = 0;
   late async.Timer _timer;
   late List<SpriteSheet> sprites;
+  final bool _hasLocalData = StorageUtil.containsKey('game');
 
   @override
   void initState() {
@@ -35,6 +37,7 @@ class _HomePageState extends State<HomePage> {
       SpriteSheetHero.hero3,
       SpriteSheetHero.hero4,
     ];
+    startTimer();
     if (!kDebugMode) {
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         Sounds.playBackgroundSound();
@@ -46,12 +49,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 500),
-      child: showSplash ? buildSplash() : _buildHome(context),
+      child: _showSplash ? buildSplash() : _buildHome(context),
     );
-  }
-
-  _doPlay(BuildContext context) {
-    Navigator.of(context).popAndPushNamed(Routes.rescueGamepage);
   }
 
   Widget _buildHome(BuildContext context) {
@@ -72,19 +71,48 @@ class _HomePageState extends State<HomePage> {
             style: Theme.of(context).textTheme.headline4,
           ),
           if (sprites.isNotEmpty) buildPlayerAnimation(),
-          ElevatedButton(
-            onPressed: () {
-              _doPlay(context);
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                "开始",
-                style: Theme.of(context).textTheme.headline5,
+          Wrap(
+            spacing: 20,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  _doPlay(context, isRestart: false);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    _hasLocalData ? "重新开始" : "开始",
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                ),
               ),
-            ),
+              if (_hasLocalData)
+                ElevatedButton(
+                  onPressed: () {
+                    _doPlay(context, isRestart: true);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      "继续游戏",
+                      style: Theme.of(context).textTheme.headline5,
+                    ),
+                  ),
+                ),
+            ],
           ),
         ],
+      ),
+    );
+  }
+
+  /// 开始游戏
+  _doPlay(BuildContext context, {bool? isRestart}) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => GamePage(
+          isRestart: isRestart ?? false,
+        ),
       ),
     );
   }
@@ -93,11 +121,13 @@ class _HomePageState extends State<HomePage> {
   Widget buildSplash() {
     return FlameSplashScreen(
       theme: FlameSplashTheme.dark,
-      onFinish: (BuildContext context) {
-        setState(() {
-          showSplash = false;
-        });
-        startTimer();
+      onFinish: (BuildContext context) async {
+        StorageUtil.setBool('isSplash', true).whenComplete(
+          () => setState(() {
+            _showSplash = false;
+          }),
+        );
+        // startTimer();
       },
     );
   }
@@ -108,9 +138,9 @@ class _HomePageState extends State<HomePage> {
       width: 100,
       height: 100,
       child: SpriteAnimationWidget(
-        animation: sprites[currentPosition].createAnimation(
+        animation: sprites[_currentPosition].createAnimation(
           row: 2,
-          stepTime: 0.15,
+          stepTime: 0.2,
         ),
         anchor: Anchor.center,
       ),
@@ -122,9 +152,9 @@ class _HomePageState extends State<HomePage> {
   void startTimer() {
     _timer = async.Timer.periodic(const Duration(seconds: 2), (timer) {
       setState(() {
-        currentPosition++;
-        if (currentPosition > sprites.length - 1) {
-          currentPosition = 0;
+        _currentPosition++;
+        if (_currentPosition > sprites.length - 1) {
+          _currentPosition = 0;
         }
       });
     });

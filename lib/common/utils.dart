@@ -13,7 +13,7 @@ class GameUtils {
   static final Color bgColor = Colors.black.withOpacity(0.9);
 
   /// 是否开启开局相机移动
-  static bool isStartCameraMove = false;
+  static bool isStartCameraMove = true;
 
   /// 屏幕块
   static final sTileSize = max(Screen.screenHeight, Screen.screenWidth) / 10;

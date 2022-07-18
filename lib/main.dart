@@ -4,7 +4,9 @@ import 'package:bonfire/bonfire.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:rescue_my_beauty/common/sounds.dart';
+import 'package:rescue_my_beauty/common/storage.dart';
 import 'package:rescue_my_beauty/player/nobita/local_player_controller.dart';
 import 'package:rescue_my_beauty/player/sprite_sheet_hero.dart';
 import 'package:rescue_my_beauty/rescue_my_beauty_route.dart';
@@ -13,6 +15,18 @@ import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await _initDependencies();
+  runApp(const MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+Future _initDependencies() async {
   if (!kIsWeb) {
     /// 设置横屏
     await Flame.device.setLandscape();
@@ -26,16 +40,8 @@ Future<void> main() async {
   }
   await Sounds.initialize();
   await SpriteSheetHero.load();
+  await StorageUtil.init();
   BonfireInjector().put((i) => LocalPlayerController());
-
-  runApp(const MyApp());
-}
-
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
@@ -56,7 +62,9 @@ class _MyAppState extends State<MyApp> {
         brightness: Brightness.dark,
         fontFamily: 'cn',
       ),
+      builder: FlutterSmartDialog.init(),
       initialRoute: Routes.rescueHomepage,
+      navigatorObservers: [FlutterSmartDialog.observer],
       onGenerateRoute: (RouteSettings settings) {
         return onGenerateRoute(
           settings: settings,
@@ -69,7 +77,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
     /// 结束恢复隐藏状态栏
-
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: SystemUiOverlay.values);
     super.dispose();

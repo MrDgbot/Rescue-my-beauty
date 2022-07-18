@@ -1,12 +1,13 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 import 'package:rescue_my_beauty/common/utils.dart';
+import 'package:rescue_my_beauty/decoration/door_key.dart';
 import 'package:rescue_my_beauty/player/enemy_sprite_sheet.dart';
 import 'package:rescue_my_beauty/player/game_sprite_sheet.dart';
 
-class Boss extends SimpleEnemy with ObjectCollision {
+class Boss extends SimpleEnemy with ObjectCollision, Lighting {
   final Vector2 initPosition;
-  double attack = 40;
+  double attack = 25;
 
   bool addChild = false;
   bool _seePlayerClose = false;
@@ -16,19 +17,25 @@ class Boss extends SimpleEnemy with ObjectCollision {
       : super(
           animation: EnemySpriteSheet.bossAnimations(),
           position: initPosition,
-          size:
-              Vector2((GameUtils.sTileSize) * 1.5, (GameUtils.sTileSize) * 1.7),
+          size: Vector2(GameUtils.sTileSize * 3, GameUtils.sTileSize * 3),
           speed: (GameUtils.sTileSize) / 0.25,
           life: 200,
         ) {
+    /// 发光
+    setupLighting(
+      LightingConfig(
+        radius: width * 4,
+        blurBorder: width * 4,
+        color: Colors.transparent,
+      ),
+    );
+
     setupCollision(
       CollisionConfig(
         collisions: [
           CollisionArea.rectangle(
-            size: Vector2(GameUtils.getSizeByTileSize(14),
-                GameUtils.getSizeByTileSize(16)),
-            align: Vector2(GameUtils.getSizeByTileSize(5),
-                GameUtils.getSizeByTileSize(11)),
+            size: Vector2(GameUtils.sTileSize * 3, GameUtils.sTileSize * 3),
+            align: Vector2(0, 0),
           ),
         ],
       ),
@@ -52,17 +59,17 @@ class Boss extends SimpleEnemy with ObjectCollision {
           closePlayer: (player) {
             execAttack();
           },
-          radiusVision: (GameUtils.tileSize) * 3,
+          radiusVision: (GameUtils.sTileSize) * 3,
         );
       },
-      radiusVision: (GameUtils.tileSize) * 3,
+      radiusVision: (GameUtils.sTileSize) * 3,
     );
     if (!_seePlayerClose) {
       seeAndMoveToAttackRange(
         positioned: (p) {
           execAttackRange();
         },
-        radiusVision: (GameUtils.tileSize) * 5,
+        radiusVision: (GameUtils.sTileSize) * 5,
       );
     }
   }
@@ -74,6 +81,11 @@ class Boss extends SimpleEnemy with ObjectCollision {
         animation: GameSpriteSheet.smokeExplosion(),
         position: position,
         size: Vector2(32, 32),
+      ),
+    );
+    gameRef.add(
+      DoorKey(
+        position,
       ),
     );
     removeFromParent();
@@ -99,13 +111,13 @@ class Boss extends SimpleEnemy with ObjectCollision {
       collision: CollisionConfig(
         collisions: [
           CollisionArea.rectangle(
-            size: Vector2((GameUtils.tileSize) / 2, (GameUtils.tileSize) / 2),
+            size: Vector2((GameUtils.sTileSize) / 2, (GameUtils.sTileSize) / 2),
           ),
         ],
       ),
       lightingConfig: LightingConfig(
-        radius: (GameUtils.tileSize) * 0.9,
-        blurBorder: (GameUtils.tileSize) / 2,
+        radius: (GameUtils.sTileSize) * 0.9,
+        blurBorder: (GameUtils.sTileSize) / 2,
         color: Colors.deepOrangeAccent.withOpacity(0.4),
       ),
     );
@@ -113,7 +125,7 @@ class Boss extends SimpleEnemy with ObjectCollision {
 
   void execAttack() {
     simpleAttackMelee(
-      size: Vector2.all((GameUtils.tileSize) * 0.62),
+      size: Vector2.all((GameUtils.sTileSize) * 0.62),
       damage: attack,
       interval: 1500,
       animationDown: EnemySpriteSheet.enemyAttackEffectBottom(),
@@ -133,7 +145,6 @@ class Boss extends SimpleEnemy with ObjectCollision {
       config: TextStyle(
         fontSize: GameUtils.getSizeByTileSize(5),
         color: Colors.white,
-        fontFamily: 'Normal',
       ),
     );
     super.receiveDamage(attacker, damage, identify);

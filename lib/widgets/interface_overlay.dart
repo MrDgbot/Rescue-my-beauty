@@ -2,7 +2,10 @@ import 'dart:math';
 
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:rescue_my_beauty/common/screen.dart';
+import 'package:rescue_my_beauty/common/storage.dart';
+import 'package:rescue_my_beauty/models/player_info.dart';
 import 'package:rescue_my_beauty/player/nobita/local_player.dart';
 import 'package:rescue_my_beauty/player/nobita/local_player_controller.dart';
 import 'package:rescue_my_beauty/rescue_my_beauty_routes.dart';
@@ -140,6 +143,19 @@ class _InterfaceOverlayState extends State<InterfaceOverlay>
                       () => widget.gameController.gameRef.resumeEngine());
             },
           ),
+          Dialogs.menuItem('游戏存档', () {
+            final p = widget.gameController.player?.position;
+            StorageUtil.setJSON(
+                    'game',
+                    PlayerInfo(
+                            id: 1,
+                            loaction: Loaction(x: p?.x ?? 10, y: p?.y ?? 10))
+                        .toJson())
+                .then((value) {
+              final String tips = value ? "存档成功" : '存档失败';
+              SmartDialog.compatible.showToast(tips);
+            });
+          }),
           Dialogs.menuItem(
             '返回游戏',
             () {

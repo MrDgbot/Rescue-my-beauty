@@ -6,9 +6,10 @@ import 'package:rescue_my_beauty/player/game_sprite_sheet.dart';
 
 class MediumMonster extends SimpleEnemy with ObjectCollision {
   final Vector2 initPosition;
+  final bool? test;
   double attack = 10;
 
-  MediumMonster(this.initPosition)
+  MediumMonster(this.initPosition, {this.test})
       : super(
           animation: EnemySpriteSheet.mediumMonsterAnimations(),
           position: initPosition,
@@ -47,7 +48,7 @@ class MediumMonster extends SimpleEnemy with ObjectCollision {
   void update(double dt) {
     super.update(dt);
     seeAndMoveToPlayer(
-      radiusVision: (GameUtils.tileSize) * 5,
+      radiusVision: (GameUtils.sTileSize) * 5,
       closePlayer: (player) {
         execAttack();
       },
@@ -56,7 +57,7 @@ class MediumMonster extends SimpleEnemy with ObjectCollision {
 
   void execAttack() {
     simpleAttackMelee(
-      size: Vector2.all((GameUtils.tileSize) * 0.62),
+      size: Vector2.all((GameUtils.sTileSize) * 0.62),
       damage: attack,
       // 攻击间隔
       interval: 450,

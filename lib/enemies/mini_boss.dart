@@ -6,7 +6,7 @@ import 'package:rescue_my_beauty/player/game_sprite_sheet.dart';
 
 class MiniBoss extends SimpleEnemy with ObjectCollision {
   final Vector2 initPosition;
-  double attack = 50;
+  double attack = 15;
   bool _seePlayerClose = false;
 
   MiniBoss(this.initPosition)
@@ -69,7 +69,7 @@ class MiniBoss extends SimpleEnemy with ObjectCollision {
       AnimatedObjectOnce(
         animation: GameSpriteSheet.smokeExplosion(),
         position: position,
-        size: Vector2(32, 32),
+        size: Vector2.all(GameUtils.sTileSize),
       ),
     );
     removeFromParent();

@@ -1,6 +1,9 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 import 'package:rescue_my_beauty/common/utils.dart';
+import 'package:rescue_my_beauty/enemies/boss.dart';
+import 'package:rescue_my_beauty/enemies/medium_monster.dart';
+import 'package:rescue_my_beauty/enemies/mini_boss.dart';
 import 'package:rescue_my_beauty/player/game_sprite_sheet.dart';
 import 'package:rescue_my_beauty/player/nobita/local_player_controller.dart';
 import 'package:rescue_my_beauty/player/sprite_sheet_hero.dart';
@@ -11,9 +14,10 @@ class LocalPlayer extends SimplePlayer
   final int id;
   final String nick;
   final SpriteSheet spriteSheet;
+  bool containKey = false;
 
   static const double _playerRatio = 1.1;
-  static final double maxSpeed = GameUtils.sTileSize * 5;
+  static final double maxSpeed = GameUtils.sTileSize * 4.6;
 
   bool lockMove = false;
 
@@ -22,7 +26,7 @@ class LocalPlayer extends SimplePlayer
           position: position,
           animation: SpriteSheetHero.animationBySpriteSheet(spriteSheet),
           speed: maxSpeed,
-          life: 100,
+          life: 150,
           size: Vector2.all(GameUtils.sTileSize / _playerRatio),
         ) {
     /// 发光
@@ -53,20 +57,15 @@ class LocalPlayer extends SimplePlayer
   bool onCollision(GameComponent component, bool active) {
     bool active = true;
 
+    /// SimpleEnemy 不发生碰撞
+    if (component is SimpleEnemy) {
+      active = false;
+    }
     if (component is FlyingAttackObject &&
         component.attackFrom == AttackFromEnum.PLAYER_OR_ALLY) {
       active = false;
     }
     return active;
-  }
-
-  /// 操纵手柄操作控制
-  @override
-  void joystickAction(JoystickActionEvent event) {
-    if (hasController) {
-      controller.joystickAction(event);
-    }
-    super.joystickAction(event);
   }
 
   /// 攻击 移动斧头 存在缺陷，人物碰撞会消失。
@@ -90,7 +89,7 @@ class LocalPlayer extends SimplePlayer
   //     ),
   //   );
   // }
-
+  /// 近战攻击
   void execAttack() {
     // final anim = SpriteSheetHero.lightBlade;
     simpleAttackMelee(
@@ -114,6 +113,7 @@ class LocalPlayer extends SimplePlayer
     // );
   }
 
+  /// 远程火球
   void actionAttackRange() {
     simpleAttackRange(
       id: id,
@@ -138,6 +138,16 @@ class LocalPlayer extends SimplePlayer
         color: Colors.deepOrangeAccent.withOpacity(0.4),
       ),
     );
+  }
+
+  /// 操纵手柄操作控制
+  @override
+  void joystickAction(JoystickActionEvent event) {
+    if (lockMove) return;
+    if (hasController) {
+      controller.joystickAction(event);
+    }
+    super.joystickAction(event);
   }
 
   /// 移动操纵杆时调用的方法。
@@ -168,7 +178,7 @@ class LocalPlayer extends SimplePlayer
       /// 屏幕变红
       gameRef.lighting
           ?.animateToColor(const Color(0xFF630000).withOpacity(0.7));
-      Future.delayed(const Duration(milliseconds: 500), () {
+      Future.delayed(const Duration(milliseconds: 300), () {
         if (!isDead) {
           idle();
           lockMove = false;
