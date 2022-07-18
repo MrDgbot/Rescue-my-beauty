@@ -41,7 +41,7 @@ class LocalPlayerController extends StateController<LocalPlayer> {
   void _enemyOrcCreate(Vector2 p) {
     /// 延迟
     if (_timerEnemyOrc == null) {
-      _timerEnemyOrc = async.Timer(const Duration(seconds: 3), () {
+      _timerEnemyOrc = async.Timer(const Duration(seconds: 8), () {
         _timerEnemyOrc = null;
       });
     } else {

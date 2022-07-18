@@ -70,7 +70,7 @@ class _GamePageState extends State<GamePage>
       child: BonfireTiledWidget(
         onReady: _startCameraMove,
         constructionMode: false,
-        showCollisionArea: true,
+        showCollisionArea: false,
         gameController: _controller,
         lightingColorGame: GameUtils.bgColor,
         background: BackgroundColorGame(Colors.black),
