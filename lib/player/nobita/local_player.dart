@@ -1,9 +1,6 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 import 'package:rescue_my_beauty/common/utils.dart';
-import 'package:rescue_my_beauty/enemies/boss.dart';
-import 'package:rescue_my_beauty/enemies/medium_monster.dart';
-import 'package:rescue_my_beauty/enemies/mini_boss.dart';
 import 'package:rescue_my_beauty/player/game_sprite_sheet.dart';
 import 'package:rescue_my_beauty/player/nobita/local_player_controller.dart';
 import 'package:rescue_my_beauty/player/sprite_sheet_hero.dart';

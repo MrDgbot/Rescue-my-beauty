@@ -1,13 +1,12 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 import 'package:rescue_my_beauty/common/utils.dart';
-import 'package:rescue_my_beauty/enemies/boss.dart';
 import 'package:rescue_my_beauty/player/sprite_sheet_hero.dart';
 
 class Shizuka extends GameDecoration with ObjectCollision {
   bool _showConversation = false;
 
-  final IntervalTick _timer = IntervalTick(1000);
+  // final IntervalTick _timer = IntervalTick(1000);
 
   Shizuka(
     Vector2 position,

@@ -4,9 +4,7 @@ import 'dart:async' as async;
 import 'package:bonfire/bonfire.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:rescue_my_beauty/common/utils.dart';
 import 'package:rescue_my_beauty/enemies/little_monster.dart';
-import 'package:rescue_my_beauty/enemies/medium_monster.dart';
 import 'local_player.dart';
 
 class LocalPlayerController extends StateController<LocalPlayer> {
