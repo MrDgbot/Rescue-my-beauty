@@ -1,0 +1,71 @@
+name: build mac
+on:
+  workflow_dispatch:
+    inputs:
+      TAG:
+        description: 'Set a Verson'
+        required: true
+        default: '1.0'
+  push:
+    tags:
+      - v*
+jobs:
+  build:
+    name: "Build MacOS"
+    runs-on: macos-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v2.4.0
+
+      - name: Setup flutter
+        uses: subosito/flutter-action@v2.4.0
+        with:
+          channel: stable
+          flutter-version: '3.0.5'
+
+      - name: Set Up XCode
+          uses: devbotsxyz/xcode-select@v1.1.0
+
+      - name: Install create-dmg
+        run: brew install create-dmg
+
+      - name: Enable desktop
+        run: flutter config --enable-macos-desktop
+
+      - name: Flutter get packages
+        run: flutter pub get
+
+      - name: Build Runner & version
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Flutter build app
+        run: flutter build macos
+
+      - name: Create dmg
+        run: |
+          ./scripts/create_mac_dmg.sh
+      - name: Compress artifacts
+        run: zip -r macos-${{ github.event.release.tag_name }}.zip build/macos/Build/Products/Release
+
+      - name: Upload artifacts to release
+        uses: svenstaro/upload-release-action@2.2.1
+        with:
+          # GitHub token.
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          # Local file to upload.
+          file: macos-${{ github.event.release.tag_name }}.zip
+          # Tag to use as a release.
+          tag: $${{ github.event.inputs.TAG }}
+
+      - name: Upload DMG to release
+        uses: svenstaro/upload-release-action@2.2.1
+        with:
+          # GitHub token.
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          # Local file to upload.
+          file: build/macos/Build/Products/Release/rescue_my_beauty.dmg
+          asset_name: rescue_my_beauty-macos-${{ github.event.release.tag_name }}.dmg
+          # Tag to use as a release.
+          tag: ${{ github.event.inputs.TAG }}
