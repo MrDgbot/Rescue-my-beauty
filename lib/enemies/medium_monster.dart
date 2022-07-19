@@ -11,7 +11,8 @@ class MediumMonster extends SimpleEnemy with ObjectCollision {
 
   MediumMonster(this.initPosition, {this.test})
       : super(
-          animation: EnemySpriteSheet.mediumMonsterAnimations(),
+          animation: EnemySpriteSheet.animationBySpriteSheetTest(
+              EnemySpriteSheet.mediumMonster),
           position: initPosition,
           size: Vector2.all((GameUtils.sTileSize) * 1),
           speed: GameUtils.sTileSize / 0.35,

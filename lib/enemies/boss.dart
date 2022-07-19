@@ -15,7 +15,8 @@ class Boss extends SimpleEnemy with ObjectCollision, Lighting {
 
   Boss(this.initPosition)
       : super(
-          animation: EnemySpriteSheet.bossAnimations(),
+          animation: EnemySpriteSheet.animationBySpriteSheetTest(
+              EnemySpriteSheet.boss),
           position: initPosition,
           size: Vector2(GameUtils.sTileSize * 3, GameUtils.sTileSize * 3),
           speed: (GameUtils.sTileSize) / 0.25,

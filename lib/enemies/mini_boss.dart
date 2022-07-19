@@ -11,7 +11,8 @@ class MiniBoss extends SimpleEnemy with ObjectCollision {
 
   MiniBoss(this.initPosition)
       : super(
-          animation: EnemySpriteSheet.miniBossAnimations(),
+          animation: EnemySpriteSheet.animationBySpriteSheetTest(
+              EnemySpriteSheet.miniBoss),
           position: initPosition,
           size: Vector2(GameUtils.sTileSize * 0.68, GameUtils.sTileSize * 0.93),
           speed: GameUtils.sTileSize / 0.35,

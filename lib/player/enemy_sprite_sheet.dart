@@ -1,6 +1,59 @@
+import 'dart:ui';
+
 import 'package:bonfire/bonfire.dart';
 
 class EnemySpriteSheet {
+  static late SpriteSheet littleMonster;
+  static late SpriteSheet mediumMonster;
+  static late SpriteSheet miniBoss;
+  static late SpriteSheet boss;
+
+  /// 初始化
+  static Future load() async {
+    littleMonster =
+        await _create('enemy/little_monster/little_sprites.png', columns: 6);
+    boss = await _create('enemy/boss/boss_sprites.png');
+    mediumMonster = await _create('enemy/medium_monster/medium_sprites.png');
+    miniBoss = await _create('enemy/mini_boss/mini_boss_sprites.png');
+  }
+
+  static Future<SpriteSheet> _create(String path,
+      {int columns = 4, int rows = 4}) async {
+    Image image = await Flame.images.load(path);
+    return SpriteSheet.fromColumnsAndRows(
+      image: image,
+      columns: columns,
+      rows: rows,
+    );
+  }
+
+  static SimpleDirectionAnimation animationBySpriteSheetTest(
+      SpriteSheet spriteSheet) {
+    return SimpleDirectionAnimation(
+      idleLeft: Future.value(
+        spriteSheet.createAnimation(row: 3, stepTime: 0.2),
+      ),
+      idleRight: Future.value(
+        spriteSheet.createAnimation(row: 1, stepTime: 0.2),
+      ),
+      runLeft: Future.value(
+        spriteSheet.createAnimation(row: 2, stepTime: 0.2),
+      ),
+      runRight: Future.value(
+        spriteSheet.createAnimation(row: 0, stepTime: 0.2),
+      ),
+    );
+  }
+
+  static Future<SpriteAnimation> bossIdleRight() => SpriteAnimation.load(
+        'enemy/boss/boss_idle.png',
+        SpriteAnimationData.sequenced(
+          amount: 4,
+          stepTime: 0.1,
+          textureSize: Vector2(32, 36),
+        ),
+      );
+
   /// 敌人向下 攻击效果
   static Future<SpriteAnimation> enemyAttackEffectBottom() =>
       SpriteAnimation.load(
@@ -41,155 +94,6 @@ class EnemySpriteSheet {
           amount: 6,
           stepTime: 0.1,
           textureSize: Vector2(16, 16),
-        ),
-      );
-
-  /// 小怪兽 动画
-  static SimpleDirectionAnimation littleMonsterAnimations() =>
-      SimpleDirectionAnimation(
-        idleLeft: SpriteAnimation.load(
-          'enemy/little_monster/littleMonster_idle_left.png',
-          SpriteAnimationData.sequenced(
-            amount: 6,
-            stepTime: 0.1,
-            textureSize: Vector2(16, 16),
-          ),
-        ),
-        idleRight: SpriteAnimation.load(
-          'enemy/little_monster/littleMonster_idle.png',
-          SpriteAnimationData.sequenced(
-            amount: 6,
-            stepTime: 0.1,
-            textureSize: Vector2(16, 16),
-          ),
-        ),
-        runLeft: SpriteAnimation.load(
-          'enemy/little_monster/littleMonster_run_left.png',
-          SpriteAnimationData.sequenced(
-            amount: 6,
-            stepTime: 0.1,
-            textureSize: Vector2(16, 16),
-          ),
-        ),
-        runRight: SpriteAnimation.load(
-          'enemy/little_monster/littleMonster_run_right.png',
-          SpriteAnimationData.sequenced(
-            amount: 6,
-            stepTime: 0.1,
-            textureSize: Vector2(16, 16),
-          ),
-        ),
-      );
-
-  /// 中型怪兽 动画
-  static SimpleDirectionAnimation mediumMonsterAnimations() =>
-      SimpleDirectionAnimation(
-        idleLeft: SpriteAnimation.load(
-          'enemy/medium_monster/mediumMonster_idle_left.png',
-          SpriteAnimationData.sequenced(
-            amount: 4,
-            stepTime: 0.1,
-            textureSize: Vector2(16, 16),
-          ),
-        ),
-        idleRight: SpriteAnimation.load(
-          'enemy/medium_monster/mediumMonster_idle.png',
-          SpriteAnimationData.sequenced(
-            amount: 4,
-            stepTime: 0.1,
-            textureSize: Vector2(16, 16),
-          ),
-        ),
-        runLeft: SpriteAnimation.load(
-          'enemy/medium_monster/mediumMonster_run_left.png',
-          SpriteAnimationData.sequenced(
-            amount: 4,
-            stepTime: 0.1,
-            textureSize: Vector2(16, 16),
-          ),
-        ),
-        runRight: SpriteAnimation.load(
-          'enemy/medium_monster/mediumMonster_run_right.png',
-          SpriteAnimationData.sequenced(
-            amount: 4,
-            stepTime: 0.1,
-            textureSize: Vector2(16, 16),
-          ),
-        ),
-      );
-
-  /// MiniBoss 动画
-  static SimpleDirectionAnimation miniBossAnimations() =>
-      SimpleDirectionAnimation(
-        idleLeft: SpriteAnimation.load(
-          'enemy/mini_boss/mini_boss_idle_left.png',
-          SpriteAnimationData.sequenced(
-            amount: 4,
-            stepTime: 0.1,
-            textureSize: Vector2(16, 24),
-          ),
-        ),
-        idleRight: SpriteAnimation.load(
-          'enemy/mini_boss/mini_boss_idle.png',
-          SpriteAnimationData.sequenced(
-            amount: 4,
-            stepTime: 0.1,
-            textureSize: Vector2(16, 24),
-          ),
-        ),
-        runLeft: SpriteAnimation.load(
-          'enemy/mini_boss/mini_boss_run_left.png',
-          SpriteAnimationData.sequenced(
-            amount: 4,
-            stepTime: 0.1,
-            textureSize: Vector2(16, 24),
-          ),
-        ),
-        runRight: SpriteAnimation.load(
-          'enemy/mini_boss/mini_boss_run_right.png',
-          SpriteAnimationData.sequenced(
-            amount: 4,
-            stepTime: 0.1,
-            textureSize: Vector2(16, 24),
-          ),
-        ),
-      );
-
-  /// 终极BOSS 动画
-  static SimpleDirectionAnimation bossAnimations() => SimpleDirectionAnimation(
-        idleLeft: SpriteAnimation.load(
-          'enemy/boss/boss_idle_left.png',
-          SpriteAnimationData.sequenced(
-            amount: 4,
-            stepTime: 0.1,
-            textureSize: Vector2(32, 36),
-          ),
-        ),
-        idleRight: bossIdleRight(),
-        runLeft: SpriteAnimation.load(
-          'enemy/boss/boss_run_left.png',
-          SpriteAnimationData.sequenced(
-            amount: 4,
-            stepTime: 0.1,
-            textureSize: Vector2(32, 36),
-          ),
-        ),
-        runRight: SpriteAnimation.load(
-          'enemy/boss/boss_run_right.png',
-          SpriteAnimationData.sequenced(
-            amount: 4,
-            stepTime: 0.1,
-            textureSize: Vector2(32, 36),
-          ),
-        ),
-      );
-
-  static Future<SpriteAnimation> bossIdleRight() => SpriteAnimation.load(
-        'enemy/boss/boss_idle.png',
-        SpriteAnimationData.sequenced(
-          amount: 4,
-          stepTime: 0.1,
-          textureSize: Vector2(32, 36),
         ),
       );
 }

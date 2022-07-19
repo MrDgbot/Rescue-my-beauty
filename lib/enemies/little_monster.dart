@@ -12,7 +12,8 @@ class LittleMonster extends SimpleEnemy with ObjectCollision {
 
   LittleMonster(this.initPosition)
       : super(
-          animation: EnemySpriteSheet.littleMonsterAnimations(),
+          animation: EnemySpriteSheet.animationBySpriteSheetTest(
+              EnemySpriteSheet.littleMonster),
           position: initPosition,
           size: Vector2.all((GameUtils.sTileSize) * 0.8),
           speed: (GameUtils.sTileSize) / 0.4,

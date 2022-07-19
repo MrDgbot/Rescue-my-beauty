@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:rescue_my_beauty/common/sounds.dart';
 import 'package:rescue_my_beauty/common/storage.dart';
+import 'package:rescue_my_beauty/player/enemy_sprite_sheet.dart';
 import 'package:rescue_my_beauty/player/nobita/local_player_controller.dart';
 import 'package:rescue_my_beauty/player/sprite_sheet_hero.dart';
 import 'package:rescue_my_beauty/rescue_my_beauty_route.dart';
@@ -40,6 +41,7 @@ Future _initDependencies() async {
   }
   await Sounds.initialize();
   await SpriteSheetHero.load();
+  await EnemySpriteSheet.load();
   await StorageUtil.init();
   BonfireInjector().put((i) => LocalPlayerController());
 }

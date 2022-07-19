@@ -83,7 +83,6 @@ class LocalPlayerController extends StateController<LocalPlayer> {
     if (stamina < 0) {
       stamina = 0;
     }
-    notifyListeners();
   }
 
   void joystickAction(JoystickActionEvent action) {
@@ -116,27 +115,5 @@ class LocalPlayerController extends StateController<LocalPlayer> {
     decrementStamina(20);
     component?.actionAttackRange();
     notifyListeners();
-  }
-
-  void receiveDamage(double damage, dynamic from) {
-    notifyListeners();
-  }
-
-  void onMove(double speed, Direction direction) {
-    if (speed > 0) {
-      _sendMove(direction);
-    } else {
-      _sendMove(null);
-    }
-  }
-
-  void _sendMove(Direction? direction) {
-    if (direction != cDirection) {
-      cDirection = direction;
-    }
-  }
-
-  void idle() {
-    _sendMove(null);
   }
 }

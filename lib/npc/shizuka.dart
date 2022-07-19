@@ -2,6 +2,8 @@ import 'package:bonfire/bonfire.dart';
 import 'package:flutter/material.dart';
 import 'package:rescue_my_beauty/common/utils.dart';
 import 'package:rescue_my_beauty/player/sprite_sheet_hero.dart';
+import 'package:rescue_my_beauty/rescue_my_beauty_routes.dart';
+import 'package:rescue_my_beauty/widgets/dialogs.dart';
 
 class Shizuka extends GameDecoration with ObjectCollision {
   bool _showConversation = false;
@@ -58,12 +60,13 @@ class Shizuka extends GameDecoration with ObjectCollision {
         personSayDirection: PersonSayDirection.LEFT,
       ),
     ], onFinish: () {
-      // Sounds.interaction();
-      // gameRef.camera.moveToPlayerAnimated(finish: () {
-      //   Dialogs.showCongratulations(gameRef.context);
-      // });
-    }, onChangeTalk: (index) {
-      // Sounds.interaction();
+      Dialogs.showGameOver(
+        context,
+        () {
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(Routes.rescueGamepage, (route) => false);
+        },
+      );
     });
   }
 }
