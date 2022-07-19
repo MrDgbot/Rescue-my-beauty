@@ -15,6 +15,7 @@ class LocalPlayerController extends StateController<LocalPlayer> {
 
   /// Orc 敌对生物生成延迟时间
   async.Timer? _timerEnemyOrc;
+  async.Timer? _staminaEnemyOrc;
 
   LocalPlayerController();
 
@@ -56,13 +57,26 @@ class LocalPlayerController extends StateController<LocalPlayer> {
   }
 
   void _verifyStamina(double dt, LocalPlayer component) {
-    if (component.checkInterval('STAMINA', 150, dt) == true) {
-      stamina += 2;
-      if (stamina > 100) {
-        stamina = 100;
-      }
-      notifyListeners();
+    if (_staminaEnemyOrc == null) {
+      _staminaEnemyOrc = async.Timer(const Duration(milliseconds: 1000), () {
+        stamina += 40;
+        if (stamina > 100) {
+          stamina = 100;
+        }
+        notifyListeners();
+        _staminaEnemyOrc = null;
+      });
+    } else {
+      return;
     }
+
+    // if (component.checkInterval('STAMINA', 2000, dt) == true) {
+    //   stamina += 20;
+    //   if (stamina > 100) {
+    //     stamina = 100;
+    //   }
+    //   notifyListeners();
+    // }
   }
 
   void decrementStamina(int i) {
