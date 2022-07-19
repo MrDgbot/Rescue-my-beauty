@@ -33,7 +33,6 @@ class LocalPlayerController extends StateController<LocalPlayer> {
       _verifyStamina(dt, component);
       _enemyOrcCreate(component.position);
     }
-
   }
 
   /// 敌对生物生成 Orc
