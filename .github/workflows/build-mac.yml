@@ -47,7 +47,7 @@ jobs:
         run: |
           ./scripts/create_mac_dmg.sh
       - name: Compress artifacts
-        run: zip -r macos-${{ github.event.release.tag_name }}.zip build/macos/Build/Products/Release
+        run: zip -r macos-${{ github.event.inputs.TAG }}.zip build/macos/Build/Products/Release
 
       - name: Upload artifacts to release
         uses: svenstaro/upload-release-action@2.2.1
@@ -55,7 +55,7 @@ jobs:
           # GitHub token.
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           # Local file to upload.
-          file: macos-${{ github.event.release.tag_name }}.zip
+          file: macos-${{ github.event.inputs.TAG }}.zip
           # Tag to use as a release.
           tag: ${{ github.event.inputs.TAG }}
 
@@ -66,6 +66,6 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           # Local file to upload.
           file: build/macos/Build/Products/Release/rescue_my_beauty.dmg
-          asset_name: rescue_my_beauty-macos-${{ github.event.release.tag_name }}.dmg
+          asset_name: rescue_my_beauty-macos-${{ github.event.inputs.TAG }}.dmg
           # Tag to use as a release.
           tag: ${{ github.event.inputs.TAG }}
