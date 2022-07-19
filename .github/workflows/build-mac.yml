@@ -57,7 +57,7 @@ jobs:
           # Local file to upload.
           file: macos-${{ github.event.release.tag_name }}.zip
           # Tag to use as a release.
-          tag: $${{ github.event.inputs.TAG }}
+          tag: ${{ github.event.inputs.TAG }}
 
       - name: Upload DMG to release
         uses: svenstaro/upload-release-action@2.2.1
