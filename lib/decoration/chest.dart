@@ -64,8 +64,7 @@ class Chest extends GameDecoration with TapGesture {
   @override
   void onTapCancel() {}
 
-  @override
-  void onTapDown(int pointer, Vector2 position) {}
+
 
   @override
   void onTapUp(int pointer, Vector2 position) {}
