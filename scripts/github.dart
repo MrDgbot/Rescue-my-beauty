@@ -89,12 +89,13 @@ Future<void> _release({
     }
   }
   dynamic id;
+  await shell.run("gh auth login");
   try {
     var response = await http.get(
       Uri.parse('https://api.github.com/repos/$repo/releases/tags/$tag'),
       headers: {
         'Authorization': 'Bearer $token',
-        'Accept': 'application/vnd.github+json',
+        'Accept': 'application/vnd.github.v3+json',
       },
     );
     print('Token $token');
@@ -132,7 +133,7 @@ Future<void> _release({
   var response = await http.get(
     Uri.parse('https://api.github.com/repos/$repo/releases/$id/assets'),
     headers: {
-      'Authorization': 'Bearer $token',
+      'Authorization': 'token $token',
       'Accept': 'application/vnd.github.v3+json',
     },
   );
@@ -154,7 +155,7 @@ Future<void> _release({
               'https://api.github.com/repos/$repo/releases/assets/${exist['id']}'),
           headers: {
             'Authorization': 'Bearer $token',
-            'Accept': 'application/vnd.github.v3+json',
+            'Accept': 'application/vnd.github+json',
           },
         );
         print('delete end: ${response.statusCode}');
@@ -168,7 +169,7 @@ Future<void> _release({
       request.files.add(await http.MultipartFile.fromPath('file', filePath));
       request.headers.addAll({
         'Authorization': 'Bearer $token',
-        'Accept': 'application/vnd.github.v3+json',
+        'Accept': 'application/vnd.github+json',
       });
       var response = await request.send();
       print('upload end: ${response.statusCode}, $filePath');
