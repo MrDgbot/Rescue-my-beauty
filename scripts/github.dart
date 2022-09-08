@@ -101,14 +101,6 @@ Future<void> _release({
     }
   }
   dynamic id;
-  await shell
-      .run(
-      "gh api --header 'Accept: application/vnd.github+json' --method GET /repos/$repo/releases/tags/$tag")
-      .then((value) {
-    print(value);
-    id = jsonDecode(value.first.stdout.toString())['id'];
-  });
-
   try {
     var response = await http.get(
       Uri.parse('https://api.github.com/repos/$repo/releases/tags/$tag'),
