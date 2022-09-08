@@ -91,12 +91,8 @@ Future<void> _release({
   dynamic id;
 
   /// 检查tag是否存在
-  await shell
-      .run(
-          'gh api -H "Accept: application/vnd.github+json" /repos/$repo/releases')
-      .then((value) {
-    print(value);
-  });
+  await shell.run(
+      'gh api -H "Accept: application/vnd.github+json" /repos/$repo/releases');
   try {
     var response = await http.get(
       Uri.parse('https://api.github.com/repos/$repo/releases/tags/$tag'),
@@ -112,24 +108,16 @@ Future<void> _release({
 
   /// 创建release
   if (id == null) {
-    var data = jsonEncode({
-      "tag_name": tag,
-      "target_commitish": "main",
-      "name": tag,
-      "body": "",
-      "draft": false,
-      "prerelease": false,
-      "generate_release_notes": true
-    });
-    var response = await http.post(
-      Uri.parse('https://api.github.com/repos/$repo/releases'),
-      body: data,
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Accept': 'application/vnd.github.v3+json',
-      },
-    );
-    id = jsonDecode(response.body)?['id'];
+    var result = await shell.run(
+        'gh api -H "Accept: application/vnd.github+json" --method POST /repos/$repo/releases'
+        ' -f tag_name=$tag'
+        ' -f target_commitish=main'
+        ' -f name=$tag'
+        ' -f body=""'
+        ' -f draft=false'
+        ' -f prerelease=false'
+        ' -f generate_release_notes=true');
+    id = jsonDecode(result.first.stdout.toString())?['id'];
   }
 
   print('release id: $id');
@@ -137,19 +125,14 @@ Future<void> _release({
     throw StateError(result.first.stdout);
   }
 
-  /// 上传文件
+  /// 获取所有文件
   var files = Glob(artifacts, recursive: true).listSync(root: root.path);
 
-  var response = await http.get(
-    Uri.parse('https://api.github.com/repos/$repo/releases/$id/assets'),
-    headers: {
-      'Authorization': 'token $token',
-      'Accept': 'application/vnd.github.v3+json',
-    },
-  );
-  print(response.body);
+  /// 获取当前release的所有文件
+  var assetsResult = await shell.run(
+      'gh api -H "Accept: application/vnd.github+json" /repos/$repo/releases/$id/assets');
 
-  var assets = jsonDecode(response.body);
+  var assets = jsonDecode(assetsResult.first.stdout.toString()) as List?;
   print('assets: ${assets?.map((e) => e['name'])}');
 
   for (var file in files) {
@@ -163,29 +146,29 @@ Future<void> _release({
       if (exist != null) {
         print('exist asset: ${exist?['name']}');
         // delete exist assert
-        var response = await http.delete(
-          Uri.parse(
-              'https://api.github.com/repos/$repo/releases/assets/${exist['id']}'),
-          headers: {
-            'Authorization': 'Bearer $token',
-            'Accept': 'application/vnd.github+json',
-          },
-        );
-        print('delete end: ${response.statusCode}');
+        var deleteResponse = await shell.run(
+            'gh api -H "Accept: application/vnd.github+json" --method DELETE /repos/$repo/releases/assets/${exist?['id']}');
+
+        print('delete end: ${deleteResponse.first.stdout}');
       }
       // upload asset.
-      var request = http.MultipartRequest(
-        'POST',
-        Uri.parse(
-            'https://uploads.github.com/repos/$repo/releases/$id/assets?name=$fileName'),
-      );
-      request.files.add(await http.MultipartFile.fromPath('file', filePath));
-      request.headers.addAll({
-        'Authorization': 'Bearer $token',
-        'Accept': 'application/vnd.github+json',
-      });
-      var response = await request.send();
-      print('upload end: ${response.statusCode}, $filePath');
+      var uploadResponse = await shell.run(
+          'gh api -H "Accept: application/vnd.github+json" --method POST /repos/$repo/releases/$id/assets'
+          ' --hostname=${await http.MultipartFile.fromPath('file', filePath)}'
+          ' -F file=@$filePath');
+      //
+      // var request = http.MultipartRequest(
+      //   'POST',
+      //   Uri.parse(
+      //       'https://uploads.github.com/repos/$repo/releases/$id/assets?name=$fileName'),
+      // );
+      // request.files.add(await http.MultipartFile.fromPath('file', filePath));
+      // request.headers.addAll({
+      //   'Authorization': 'Bearer $token',
+      //   'Accept': 'application/vnd.github+json',
+      // });
+      // var response = await request.send();
+      print('upload end: ${uploadResponse.first.stdout}, $filePath');
     }
   }
   print('task end');
