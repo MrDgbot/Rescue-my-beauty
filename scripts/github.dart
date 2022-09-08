@@ -151,7 +151,9 @@ Future<void> _release({
       'Accept': 'application/vnd.github.v3+json',
     },
   );
-  var assets = jsonDecode(response.body) as List?;
+  print(response.body);
+
+  var assets = jsonDecode(response.body);
   print('assets: ${assets?.map((e) => e['name'])}');
   for (var file in files) {
     if (file is File) {
