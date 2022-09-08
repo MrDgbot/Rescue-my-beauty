@@ -16,9 +16,9 @@ enum Fun {
 
 Future<void> main(List<String> arguments) async {
   var parser = ArgParser()
-    ..addOption('fun', abbr: 'f', allowed: Fun.values.map((e) => e.name))
-    ..addOption('token', abbr: 't')
-    ..addOption('artifacts', abbr: 'a');
+    ..addOption(
+        'fun', abbr: 'f', allowed: Fun.values.map((e) => e.name))..addOption(
+        'token', abbr: 't')..addOption('artifacts', abbr: 'a');
   print(arguments);
 
   var parse = parser.parse(arguments);
@@ -27,10 +27,18 @@ Future<void> main(List<String> arguments) async {
   var shell = Shell();
   var result = await shell.run("git remote -v");
   var urlParts =
-      result.first.stdout.toString().trim().split("\n").last.split("/");
+  result.first.stdout
+      .toString()
+      .trim()
+      .split("\n")
+      .last
+      .split("/");
   var repo = [
     urlParts[urlParts.length - 2],
-    urlParts[urlParts.length - 1].split(" ").first.replaceAll(".git", '')
+    urlParts[urlParts.length - 1]
+        .split(" ")
+        .first
+        .replaceAll(".git", '')
   ].join("/");
   switch (Fun.values.firstWhere((e) => e.name == parse['fun'])) {
     case Fun.release:
@@ -53,7 +61,7 @@ Future<void> _release({
   await shell.run("git remote set-url origin https://$token@github.com/$repo");
   var result = await shell.run("git show -s");
   var commitId =
-      RegExp(r"\s([a-z\d]{40})\s").firstMatch(result.first.stdout)?.group(1);
+  RegExp(r"\s([a-z\d]{40})\s").firstMatch(result.first.stdout)?.group(1);
   if (commitId == null) {
     throw StateError("Can't get ref.");
   }
@@ -76,7 +84,11 @@ Future<void> _release({
   result = await shell.run("git ls-remote --tags");
   var tags = result.first.stdout.toString();
   var has =
-      tags.split("\n").any((s) => s.split("refs/tags/").last.startsWith(tag));
+  tags.split("\n").any((s) =>
+      s
+          .split("refs/tags/")
+          .last
+          .startsWith(tag));
   if (!has) {
     try {
       await shell.run("git"
@@ -107,17 +119,8 @@ Future<void> _release({
   /// 创建release
   if (id == null) {
     try {
-      var result = await shell.run('gh api \\'
-          ' --method POST\\'
-          '-H "Accept: application/vnd.github+json"\\'
-          '/repos/$repo/releases\\'
-          ' -f tag_name=$tag\\'
-          ' -f target_commitish=main\\'
-          ' -f name=$tag\\'
-          ' -f body=""\\'
-          ' -F draft=false\\'
-          ' -F prerelease=false\\'
-          ' -F generate_release_notes=true');
+      var result = await shell.run(
+          'gh api --method POST -H "Accept: application/vnd.github+json" /repos/OWNER/REPO/releases -f tag_name=$tag -f target_commitish=main -f name=$tag - f body="" -F draft=false -F prerelease=false -F generate_release_notes=false ');
       print('创建release ${result.first}');
       // id = jsonDecode(result.first.stdout.toString())?['id'];
       print('创建release ${result.first.stdout?['id']}');
@@ -159,8 +162,9 @@ Future<void> _release({
         // upload asset.
         var uploadResponse = await shell.run(
             'gh api -H "Accept: application/vnd.github+json" --method POST /repos/$repo/releases/$id/assets'
-            ' --hostname=${await http.MultipartFile.fromPath('file', filePath)}'
-            ' -F file=@$filePath');
+                ' --hostname=${await http.MultipartFile.fromPath(
+                'file', filePath)}'
+                ' -F file=@$filePath');
         //
         // var request = http.MultipartRequest(
         //   'POST',
