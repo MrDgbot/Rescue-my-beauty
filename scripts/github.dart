@@ -91,8 +91,8 @@ Future<void> _release({
     var response = await http.get(
       Uri.parse('https://api.github.com/repos/$repo/releases/tags/$tag'),
       headers: {
-        'Authorization': 'token $token',
-        'Accept': 'application/vnd.github.v3+json',
+        'Authorization': 'Bearer $token',
+        'Accept': 'application/vnd.github+json',
       },
     );
     print(jsonDecode(response.body));
@@ -115,7 +115,7 @@ Future<void> _release({
       body: data,
       headers: {
         'Authorization': 'Bearer $token',
-        'Accept': 'application/vnd.github.v3+json',
+        'Accept': 'application/vnd.github+json',
       },
     );
     id = jsonDecode(response.body)?['id'];
