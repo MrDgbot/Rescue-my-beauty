@@ -1,64 +1,64 @@
-name: build apk
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
-on:
-  push:
-    branches:
-      - main
-      - master
-    tags-ignore:
-      - v**
-  workflow_dispatch:
-
-jobs:
-  build:
-    name: Release build
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Setup JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: '11.x'
-      - name: Setup flutter
-        uses: subosito/flutter-action@v1
-        with:
-          channel: stable
-          flutter-version: '3.0.5'
-      - name: Build split apk
-        run: |
-          \cp -f pubspec.yaml assets/
-          ls assets
-          flutter clean
-          flutter pub get
-          flutter build apk --release --no-tree-shake-icons
-          flutter build apk --target-platform android-arm,android-arm64,android-x64 --split-per-abi --release --no-tree-shake-icons
-          ls build/app/outputs/flutter-apk
-          mkdir -p releases
-          mv -f build/app/outputs/flutter-apk/*-release.apk releases
-          ls releases
-          mv -f releases/app-release.apk releases/app-universal-release.apk
-          ls releases
-#      - name: Sign build apk
-#        uses: iota9star/sign-android-release@v1.0.5
+#name: build apk
+#concurrency:
+#  group: ${{ github.workflow }}-${{ github.ref }}
+#  cancel-in-progress: true
+#
+#on:
+#  push:
+#    branches:
+#      - main
+#      - master
+#    tags-ignore:
+#      - v**
+#  workflow_dispatch:
+#
+#jobs:
+#  build:
+#    name: Release build
+#    runs-on: ubuntu-18.04
+#    steps:
+#      - uses: actions/checkout@v2
 #        with:
-#          releaseDirectory: releases
-#          fileRegex: .*-release.apk
-#          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-#          alias: ${{ secrets.ALIAS }}
-#          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-#          keyPassword: ${{ secrets.KEY_PASSWORD }}
-#        env:
-#          BUILD_TOOLS_VERSION: "30.0.2"
-      - name: Rename signed apk
-        run: |
-          ls releases
-          for name in $(ls releases/*-signed.apk);do mv -f $name ${name%-signed.apk}.apk ;done
-          ls releases
-      - name: Release to github
-        run: |
-          dart scripts/github.dart --token=${{ secrets.GITHUB_TOKEN }} --fun=release --artifacts=releases/*-release.apk
+#          fetch-depth: 0
+#      - name: Setup JDK
+#        uses: actions/setup-java@v1
+#        with:
+#          java-version: '11.x'
+#      - name: Setup flutter
+#        uses: subosito/flutter-action@v1
+#        with:
+#          channel: stable
+#          flutter-version: '3.0.5'
+#      - name: Build split apk
+#        run: |
+#          \cp -f pubspec.yaml assets/
+#          ls assets
+#          flutter clean
+#          flutter pub get
+#          flutter build apk --release --no-tree-shake-icons
+#          flutter build apk --target-platform android-arm,android-arm64,android-x64 --split-per-abi --release --no-tree-shake-icons
+#          ls build/app/outputs/flutter-apk
+#          mkdir -p releases
+#          mv -f build/app/outputs/flutter-apk/*-release.apk releases
+#          ls releases
+#          mv -f releases/app-release.apk releases/app-universal-release.apk
+#          ls releases
+##      - name: Sign build apk
+##        uses: iota9star/sign-android-release@v1.0.5
+##        with:
+##          releaseDirectory: releases
+##          fileRegex: .*-release.apk
+##          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+##          alias: ${{ secrets.ALIAS }}
+##          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+##          keyPassword: ${{ secrets.KEY_PASSWORD }}
+##        env:
+##          BUILD_TOOLS_VERSION: "30.0.2"
+#      - name: Rename signed apk
+#        run: |
+#          ls releases
+#          for name in $(ls releases/*-signed.apk);do mv -f $name ${name%-signed.apk}.apk ;done
+#          ls releases
+#      - name: Release to github
+#        run: |
+#          dart scripts/github.dart --token=${{ secrets.GITHUB_TOKEN }} --fun=release --artifacts=releases/*-release.apk
