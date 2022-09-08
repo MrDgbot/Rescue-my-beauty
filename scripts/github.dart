@@ -16,9 +16,9 @@ enum Fun {
 
 Future<void> main(List<String> arguments) async {
   var parser = ArgParser()
-    ..addOption('fun', abbr: 'f', allowed: Fun.values.map((e) => e.name))
-    ..addOption('token', abbr: 't')
-    ..addOption('artifacts', abbr: 'a');
+    ..addOption(
+        'fun', abbr: 'f', allowed: Fun.values.map((e) => e.name))..addOption(
+        'token', abbr: 't')..addOption('artifacts', abbr: 'a');
   print(arguments);
 
   var parse = parser.parse(arguments);
@@ -27,10 +27,18 @@ Future<void> main(List<String> arguments) async {
   var shell = Shell();
   var result = await shell.run("git remote -v");
   var urlParts =
-  result.first.stdout.toString().trim().split("\n").last.split("/");
+  result.first.stdout
+      .toString()
+      .trim()
+      .split("\n")
+      .last
+      .split("/");
   var repo = [
     urlParts[urlParts.length - 2],
-    urlParts[urlParts.length - 1].split(" ").first.replaceAll(".git", '')
+    urlParts[urlParts.length - 1]
+        .split(" ")
+        .first
+        .replaceAll(".git", '')
   ].join("/");
   switch (Fun.values.firstWhere((e) => e.name == parse['fun'])) {
     case Fun.release:
@@ -76,7 +84,11 @@ Future<void> _release({
   result = await shell.run("git ls-remote --tags");
   var tags = result.first.stdout.toString();
   var has =
-  tags.split("\n").any((s) => s.split("refs/tags/").last.startsWith(tag));
+  tags.split("\n").any((s) =>
+      s
+          .split("refs/tags/")
+          .last
+          .startsWith(tag));
   if (!has) {
     try {
       await shell.run("git"
@@ -89,7 +101,14 @@ Future<void> _release({
     }
   }
   dynamic id;
-  await shell.run("gh auth login");
+  await shell
+      .run(
+      "gh api --header 'Accept: application/vnd.github.v3+json' --method GET /repos/$repo/releases/tags/$tag")
+      .then((value) {
+    print(value);
+    id = jsonDecode(value.first.stdout.toString())['id'];
+  });
+
   try {
     var response = await http.get(
       Uri.parse('https://api.github.com/repos/$repo/releases/tags/$tag'),
@@ -99,9 +118,12 @@ Future<void> _release({
       },
     );
     print('Token $token');
-    print('Uri ${Uri.parse('https://api.github.com/repos/$repo/releases/tags/$tag').toString()}');
+    print(
+        'Uri ${Uri.parse(
+            'https://api.github.com/repos/$repo/releases/tags/$tag')
+            .toString()}');
     print(jsonDecode(response.body));
-    id = jsonDecode(response.body)??['id'];
+    id = jsonDecode(response.body) ?? ['id'];
   } catch (e) {
     print(e);
   }
