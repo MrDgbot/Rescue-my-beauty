@@ -23,6 +23,8 @@ jobs:
         with:
           channel: 'stable'
       - name: Create tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           dart pub get
           dart scripts/github.dart --token=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 --fun=release --artifacts=**.yaml

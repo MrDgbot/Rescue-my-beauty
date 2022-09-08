@@ -20,10 +20,15 @@ Future<void> main(List<String> arguments) async {
     ..addOption('token', abbr: 't')
     ..addOption('artifacts', abbr: 'a');
   print(arguments);
+
   var parse = parser.parse(arguments);
   var token = parse['token'];
   var artifacts = parse['artifacts'];
   var shell = Shell();
+  var getToken = await shell.run("env_name=GITHUB_TOKEN");
+  var ggToken = await shell.run('eval echo \'\$\'\$env_name');
+  print(ggToken);
+
   var result = await shell.run("git remote -v");
   var urlParts =
   result.first.stdout.toString().trim().split("\n").last.split("/");
