@@ -91,23 +91,21 @@ Future<void> _release({
   dynamic id;
 
   /// 检查tag是否存在
-  await shell.run(
-      'gh api -H "Accept: application/vnd.github+json" /repos/$repo/releases');
-  try {
-    var response = await http.get(
-      Uri.parse('https://api.github.com/repos/$repo/releases/tags/$tag'),
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Accept': 'application/vnd.github.v3+json',
-      },
-    );
-    id = jsonDecode(response.body) ?? ['id'];
-  } catch (e) {
-    print(e);
-  }
+  // try {
+  //   var response = await http.get(
+  //     Uri.parse('https://api.github.com/repos/$repo/releases/tags/$tag'),
+  //     headers: {
+  //       'Authorization': 'Bearer $token',
+  //       'Accept': 'application/vnd.github.v3+json',
+  //     },
+  //   );
+  //   id = jsonDecode(response.body) ?? ['id'];
+  // } catch (e) {
+  //   print(e);
+  // }
 
   /// 创建release
-  if (id == null) {
+  if (id == null ) {
     var result = await shell.run(
         'gh api -H "Accept: application/vnd.github+json" --method POST /repos/$repo/releases'
         ' -f tag_name=$tag'
@@ -117,6 +115,7 @@ Future<void> _release({
         ' -f draft=false'
         ' -f prerelease=false'
         ' -f generate_release_notes=true');
+    print(result.first.stdout);
     id = jsonDecode(result.first.stdout.toString())?['id'];
   }
 
