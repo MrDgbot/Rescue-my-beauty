@@ -61,6 +61,6 @@ jobs:
           ls releases
       - name: Release to github
         env:
-          GH_TOKEN: ${{ secrets.ACTION_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           dart scripts/github.dart --token=$GH_TOKEN --fun=release --artifacts=releases/*-release.apk
