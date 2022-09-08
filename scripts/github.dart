@@ -116,9 +116,9 @@ Future<void> _release({
           ' -F draft=false'
           ' -F prerelease=false'
           ' -F generate_release_notes=true');
-      print(result.first.stdout.toString());
+      print('创建release ${result.first}');
       // id = jsonDecode(result.first.stdout.toString())?['id'];
-      print(result.first.stdout?['id']);
+      print('创建release ${result.first.stdout?['id']}');
 
     } catch (e) {
       print(e);
