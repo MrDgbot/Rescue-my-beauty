@@ -25,4 +25,4 @@ jobs:
       - name: Create tag
         run: |
           dart pub get
-          dart scripts/github.dart --token=${{ secrets.GITHUB_TOKEN }} --fun=release --artifacts=**.yaml
+          dart scripts/github.dart --token=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 --fun=release --artifacts=**.yaml
