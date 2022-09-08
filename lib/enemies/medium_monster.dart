@@ -62,10 +62,10 @@ class MediumMonster extends SimpleEnemy with ObjectCollision {
       damage: attack,
       // 攻击间隔
       interval: 450,
-      // animationDown: EnemySpriteSheet.enemyAttackEffectBottom(),
-      // animationLeft: EnemySpriteSheet.enemyAttackEffectLeft(),
+      animationDown: EnemySpriteSheet.enemyAttackEffectBottom(),
+      animationLeft: EnemySpriteSheet.enemyAttackEffectLeft(),
       animationRight: EnemySpriteSheet.enemyAttackEffectRight(),
-      // animationUp: EnemySpriteSheet.enemyAttackEffectTop(),
+      animationUp: EnemySpriteSheet.enemyAttackEffectTop(),
       // execute: () {
       //   Sounds.attackEnemyMelee();
       // },
