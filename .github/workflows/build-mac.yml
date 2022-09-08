@@ -9,12 +9,11 @@ on:
   push:
     tags:
       - v*
+
 jobs:
   build:
     name: "Build MacOS"
     runs-on: macos-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - uses: actions/checkout@v2.4.0
