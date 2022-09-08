@@ -1,0 +1,28 @@
+name: Runnable (stable)
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    tags-ignore:
+      - v**
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Test tag
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - name: Create tag
+        run: |
+          dart pub get
+          dart bin/scripts.dart --token=${{ secrets.GITHUB_TOKEN }} --fun=release --artifacts=**.yaml
