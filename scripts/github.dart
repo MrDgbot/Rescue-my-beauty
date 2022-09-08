@@ -112,9 +112,9 @@ Future<void> _release({
         ' -f target_commitish=main'
         ' -f name=$tag'
         ' -f body=""'
-        ' -f draft=false'
-        ' -f prerelease=false'
-        ' -f generate_release_notes=true');
+        ' -F draft=false'
+        ' -F prerelease=false'
+        ' -F generate_release_notes=true');
     print(result.first.stdout);
     id = jsonDecode(result.first.stdout.toString())?['id'];
   }
