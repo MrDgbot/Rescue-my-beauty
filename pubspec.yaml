@@ -34,6 +34,7 @@ dev_dependencies:
   yaml: ^3.1.1
   glob: ^2.1.0
   http: ^0.13.5
+  process_run: ^0.12.3+2
   build_runner: any
   flutter_lints: ^2.0.1
   hive_generator: ^1.1.3
