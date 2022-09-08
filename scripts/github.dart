@@ -99,7 +99,7 @@ Future<void> _release({
   //       'Accept': 'application/vnd.github.v3+json',
   //     },
   //   );
-  //   id = jsonDecode(response.body) ?? ['id'];
+  //   id = jsonDecode(response.body)?['id'];
   // } catch (e) {
   //   print(e);
   // }
@@ -108,7 +108,7 @@ Future<void> _release({
   if (id == null) {
     try {
       var result = await shell.run(
-          'gh api -H "Accept: application/vnd.github+json" --method POST /repos/$repo/releases'
+          'gh api --method POST -H "Accept: application/vnd.github+json" /repos/$repo/releases'
           ' -f tag_name=$tag'
           ' -f target_commitish=main'
           ' -f name=$tag'
@@ -118,6 +118,8 @@ Future<void> _release({
           ' -F generate_release_notes=true');
       print(result.first.stdout.toString());
       id = jsonDecode(result.first.stdout.toString())?['id'];
+      print(result.first.stdout?['id']);
+
     } catch (e) {
       print(e);
     }
