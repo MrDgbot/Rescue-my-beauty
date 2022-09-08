@@ -117,7 +117,7 @@ Future<void> _release({
           ' -F prerelease=false'
           ' -F generate_release_notes=true');
       print(result.first.stdout.toString());
-      id = jsonDecode(result.first.stdout.toString())?['id'];
+      // id = jsonDecode(result.first.stdout.toString())?['id'];
       print(result.first.stdout?['id']);
 
     } catch (e) {
