@@ -120,7 +120,7 @@ Future<void> _release({
   if (id == null) {
     try {
       var result = await shell.run(
-          'gh api --method POST -H "Accept: application/vnd.github+json" /repos/$repo/releases -f tag_name=$tag -f target_commitish=main -f name=$tag - f body="" -F draft=false -F prerelease=false -F generate_release_notes=false ');
+          'gh api --method POST -H "Accept: application/vnd.github.v3+json" /repos/$repo/releases -f tag_name=$tag -f target_commitish=main -f name=$tag - f body="" -F draft=false -F prerelease=false -F generate_release_notes=false ');
       print('创建release ${result.first}');
       // id = jsonDecode(result.first.stdout.toString())?['id'];
       print('创建release ${result.first.stdout?['id']}');
