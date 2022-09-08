@@ -35,6 +35,7 @@ jobs:
           ls assets
           flutter clean
           flutter pub get
+          flutter packages pub run json_model
           flutter build apk --release --no-tree-shake-icons
           flutter build apk --target-platform android-arm,android-arm64,android-x64 --split-per-abi --release --no-tree-shake-icons
           ls build/app/outputs/flutter-apk
