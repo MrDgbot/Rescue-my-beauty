@@ -67,7 +67,7 @@ class _GamePageState extends State<GamePage>
   Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
-      child: BonfireWidget(
+      child: BonfireTiledWidget(
         onReady: _startCameraMove,
         constructionMode: false,
         showCollisionArea: false,
@@ -109,9 +109,9 @@ class _GamePageState extends State<GamePage>
             )
           ],
         ),
-        map: WorldMapByTiled(
+        map: TiledWorldMap(
           'tiles/map.json',
-          forceTileSize: Vector2(GameUtils.sTileSize, GameUtils.sTileSize),
+          forceTileSize: Size(GameUtils.sTileSize, GameUtils.sTileSize),
           objectsBuilder: {
             'light': (p) => Light(p.position, p.size),
             'chest': (p) => Chest(p.position),
