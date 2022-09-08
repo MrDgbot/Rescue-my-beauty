@@ -19,6 +19,7 @@ Future<void> main(List<String> arguments) async {
     ..addOption('fun', abbr: 'f', allowed: Fun.values.map((e) => e.name))
     ..addOption('token', abbr: 't')
     ..addOption('artifacts', abbr: 'a');
+  print(arguments);
   var parse = parser.parse(arguments);
   var token = parse['token'];
   var artifacts = parse['artifacts'];
