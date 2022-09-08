@@ -95,7 +95,8 @@ Future<void> _release({
         'Accept': 'application/vnd.github.v3+json',
       },
     );
-    id = jsonDecode(response.body)?['id'];
+    print(jsonDecode(response.body));
+    id = jsonDecode(response.body)??['id'];
   } catch (e) {
     print(e);
   }
