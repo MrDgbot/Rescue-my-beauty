@@ -98,8 +98,9 @@ Future<void> _release({
   } catch (e) {
     print(e);
   }
+  print('tag id: $id');
 
-  /// 创建release
+  /// tag未发布则创建release
   if (id == null) {
     try {
       var response = await shell
@@ -116,46 +117,45 @@ Future<void> _release({
     } catch (e) {
       print(e);
     }
-
-    print('release id: $id');
-    if (id == null) {
-      throw StateError(result.first.stdout);
-    }
-
-    /// 获取所有文件
-    var files = Glob(artifacts, recursive: true).listSync(root: root.path);
-    print("filesLength ${files.length}");
-
-    /// 获取当前release的所有文件
-    var assetsResult = await shell.run(
-        'gh api -H "Accept: application/vnd.github+json" /repos/$repo/releases/$id/assets');
-
-    var assets = jsonDecode(assetsResult.first.stdout.toString()) as List?;
-    print('assets: ${assets?.map((e) => e['name'])}');
-    for (var file in files) {
-      if (file is File) {
-        var filePath = file.absolute.path;
-        var fileName = basename(filePath);
-        print('prepare upload: $filePath');
-        var exist = assets?.firstWhereOrNull((e) {
-          return e['name'] == fileName;
-        });
-        if (exist != null) {
-          print('exist asset: ${exist?['name']}');
-          // delete exist assert
-          var deleteResponse = await shell.run(
-              'gh api -H "Accept: application/vnd.github+json" --method DELETE /repos/$repo/releases/assets/${exist?['id']}');
-
-          print('delete end: ${deleteResponse.first.stdout}');
-        }
-        // upload asset.
-        var uploadResponse =
-            await shell.run('gh release upload $tag $filePath');
-
-        print('upload end: ${uploadResponse.first.stdout}, $filePath');
-      }
-    }
-    print('task end');
-    exit(0);
   }
+  print('release id: $id');
+  if (id == null) {
+    throw StateError(result.first.stdout);
+  }
+
+  /// 获取所有文件
+  var files = Glob(artifacts, recursive: true).listSync(root: root.path);
+  print("filesLength ${files.length}");
+
+  /// 获取当前release的所有文件
+  var assetsResult = await shell.run(
+      'gh api -H "Accept: application/vnd.github+json" /repos/$repo/releases/$id/assets');
+
+  var assets = jsonDecode(assetsResult.first.stdout.toString()) as List?;
+  print('assets: ${assets?.map((e) => e['name'])}');
+
+  for (var file in files) {
+    if (file is File) {
+      var filePath = file.absolute.path;
+      var fileName = basename(filePath);
+      print('prepare upload: $filePath');
+      var exist = assets?.firstWhereOrNull((e) {
+        return e['name'] == fileName;
+      });
+      if (exist != null) {
+        print('exist asset: ${exist?['name']}');
+        // delete exist assert
+        var deleteResponse = await shell.run(
+            'gh api -H "Accept: application/vnd.github+json" --method DELETE /repos/$repo/releases/assets/${exist?['id']}');
+
+        print('delete end: ${deleteResponse.first.stdout}');
+      }
+      // upload asset.
+      var uploadResponse = await shell.run('gh release upload $tag $filePath');
+
+      print('upload end: ${uploadResponse.first.stdout}, $filePath');
+    }
+  }
+  print('task end');
+  exit(0);
 }
