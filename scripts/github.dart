@@ -117,11 +117,12 @@ Future<void> _release({
     } catch (e) {
       print(e);
     }
+    if (id == null) {
+      throw StateError(result.first.stdout);
+    }
   }
   print('release id: $id');
-  if (id == null) {
-    throw StateError(result.first.stdout);
-  }
+
 
   /// 获取所有文件
   var files = Glob(artifacts, recursive: true).listSync(root: root.path);
