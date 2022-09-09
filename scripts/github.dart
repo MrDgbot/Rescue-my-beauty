@@ -118,6 +118,7 @@ Future<void> _release({
         'Accept': 'application/vnd.github+json',
       },
     );
+    print(response.body);
     id = jsonDecode(response.body)?['id'];
   }
   print('release id: $id');
