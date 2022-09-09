@@ -107,8 +107,8 @@ Future<void> _release({
   /// 创建release
   if (id == null) {
     try {
-      var result = await shell.run(
-          'gh api --method POST -H "Accept: application/vnd.github+json" '
+      var result = await shell
+          .run('gh api --method POST -H "Accept: application/vnd.github+json" '
               '/repos/$repo/releases '
               '-f tag_name=$tag '
               '-f target_commitish=master '
@@ -155,9 +155,10 @@ Future<void> _release({
         }
         // upload asset.
         var uploadResponse = await shell.run(
-            'gh api -H "Accept: application/vnd.github+json" --method POST /repos/$repo/releases/$id/assets'
-            ' --hostname=${await http.MultipartFile.fromPath('file', filePath)}'
-            ' -F file=@$filePath');
+            'gh api -H "Accept: application/vnd.github+json" -H "asset_content_type: application/zip" --method POST /repos/$repo/releases/$id/assets'
+            ' --hostname=$fileName'
+            ' --name=$fileName'
+            ' -F file=$filePath');
         //
         // var request = http.MultipartRequest(
         //   'POST',
