@@ -25,7 +25,7 @@ Future<void> main(List<String> arguments) async {
   var shell = Shell();
   var result = await shell.run("git remote -v");
   var urlParts =
-  result.first.stdout.toString().trim().split("\n").last.split("/");
+      result.first.stdout.toString().trim().split("\n").last.split("/");
   var repo = [
     urlParts[urlParts.length - 2],
     urlParts[urlParts.length - 1].split(" ").first.replaceAll(".git", '')
@@ -51,7 +51,7 @@ Future<void> _release({
   await shell.run("git remote set-url origin https://$token@github.com/$repo");
   var result = await shell.run("git show -s");
   var commitId =
-  RegExp(r"\s([a-z\d]{40})\s").firstMatch(result.first.stdout)?.group(1);
+      RegExp(r"\s([a-z\d]{40})\s").firstMatch(result.first.stdout)?.group(1);
   if (commitId == null) {
     throw StateError("Can't get ref.");
   }
@@ -74,7 +74,7 @@ Future<void> _release({
   result = await shell.run("git ls-remote --tags");
   var tags = result.first.stdout.toString();
   var has =
-  tags.split("\n").any((s) => s.split("refs/tags/").last.startsWith(tag));
+      tags.split("\n").any((s) => s.split("refs/tags/").last.startsWith(tag));
   if (!has) {
     try {
       await shell.run("git"
@@ -118,7 +118,7 @@ Future<void> _release({
         'Accept': 'application/vnd.github+json',
       },
     );
-    print(response.body);
+    print('id${jsonDecode(response.body)}');
     id = jsonDecode(response.body)?['id'];
   }
   print('release id: $id');
