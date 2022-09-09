@@ -149,24 +149,9 @@ Future<void> _release({
           print('delete end: ${deleteResponse.first.stdout}');
         }
         // upload asset.
-        var uploadResponse = await shell.run('gh api '
-            '-H "Accept: application/vnd.github+json" '
-            '-H "asset_content_type: application/zip" '
-            '--method POST '
-            '/repos/$repo/releases/$id/assets?name=$fileName'
-            ' -T $filePath');
-        //
-        // var request = http.MultipartRequest(
-        //   'POST',
-        //   Uri.parse(
-        //       'https://uploads.github.com/repos/$repo/releases/$id/assets?name=$fileName'),
-        // );
-        // request.files.add(await http.MultipartFile.fromPath('file', filePath));
-        // request.headers.addAll({
-        //   'Authorization': 'Bearer $token',
-        //   'Accept': 'application/vnd.github+json',
-        // });
-        // var response = await request.send();
+        var uploadResponse =
+            await shell.run('gh release upload $tag $filePath');
+
         print('upload end: ${uploadResponse.first.stdout}, $filePath');
       }
     }
