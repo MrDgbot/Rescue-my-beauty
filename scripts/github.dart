@@ -154,9 +154,12 @@ Future<void> _release({
           print('delete end: ${deleteResponse.first.stdout}');
         }
         // upload asset.
-        var uploadResponse = await shell.run(
-            'gh api -H "Accept: application/vnd.github+json" -H "asset_content_type: application/zip" --method POST /repos/$repo/releases/$id/assets'
-            ' -F file=$filePath');
+        var uploadResponse = await shell.run('gh api '
+            '-H "Accept: application/vnd.github+json" '
+            '-H "asset_content_type: application/zip" '
+            '--method POST '
+            '/repos/$repo/releases/$id/assets?name=$fileName'
+            ' -F file_name=@$filePath');
         //
         // var request = http.MultipartRequest(
         //   'POST',
