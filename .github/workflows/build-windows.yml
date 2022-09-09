@@ -39,7 +39,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          dart scripts/github.dart --token=${{ secrets.GITHUB_TOKEN }} --fun=release --artifacts=releases/*-release.apk
+          dart scripts/github.dart --token=${{ secrets.GITHUB_TOKEN }} --fun=release --artifacts=releases/*-release.zip
 #      - name: Release build
 #        uses: ncipollo/release-action@v1.10.0
 #        with:
