@@ -5,7 +5,6 @@ import 'package:args/args.dart';
 import 'package:collection/collection.dart';
 import 'package:glob/glob.dart';
 import 'package:glob/list_local_fs.dart';
-import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:process_run/shell.dart';
 import 'package:yaml/yaml.dart';
@@ -102,7 +101,7 @@ Future<void> _release({
   /// 创建release
   if (id == null) {
     try {
-      var result = await shell
+      var response = await shell
           .run('gh api --method POST -H "Accept: application/vnd.github+json" '
               '/repos/$repo/releases '
               '-f tag_name=$tag '
@@ -112,7 +111,7 @@ Future<void> _release({
               '-F draft=false '
               '-F prerelease=false '
               '-F generate_release_notes=false');
-      id = jsonDecode(result.first.stdout.toString())?['id'];
+      id = jsonDecode(response.first.stdout.toString())?['id'];
     } catch (e) {
       print(e);
     }
