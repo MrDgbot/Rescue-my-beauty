@@ -90,19 +90,21 @@ Future<void> _release({
   }
   dynamic id;
 
-  /// 检查tag是否存在
-  // try {
-  //   var response = await http.get(
-  //     Uri.parse('https://api.github.com/repos/$repo/releases/tags/$tag'),
-  //     headers: {
-  //       'Authorization': 'Bearer $token',
-  //       'Accept': 'application/vnd.github.v3+json',
-  //     },
-  //   );
-  //   id = jsonDecode(response.body)?['id'];
-  // } catch (e) {
-  //   print(e);
-  // }
+  /// 检查tag是否发布
+  try {
+    var r
+
+    var response = await http.get(
+      Uri.parse('https://api.github.com/repos/$repo/releases/tags/$tag'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Accept': 'application/vnd.github.v3+json',
+      },
+    );
+    id = jsonDecode(response.body)?['id'];
+  } catch (e) {
+    print(e);
+  }
 
   /// 创建release
   if (id == null) {
@@ -157,7 +159,6 @@ Future<void> _release({
         var uploadResponse = await shell.run(
             'gh api -H "Accept: application/vnd.github+json" -H "asset_content_type: application/zip" --method POST /repos/$repo/releases/$id/assets'
             ' --hostname=$fileName'
-            ' --name=$fileName'
             ' -F file=$filePath');
         //
         // var request = http.MultipartRequest(
