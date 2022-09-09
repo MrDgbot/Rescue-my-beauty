@@ -119,6 +119,7 @@ Future<void> _release({
       },
     );
     print('id${jsonDecode(response.body)}');
+    print('body ${response.body}');
     id = jsonDecode(response.body)?['id'];
   }
   print('release id: $id');
