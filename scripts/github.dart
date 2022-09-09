@@ -5,6 +5,7 @@ import 'package:args/args.dart';
 import 'package:collection/collection.dart';
 import 'package:glob/glob.dart';
 import 'package:glob/list_local_fs.dart';
+import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:process_run/shell.dart';
 import 'package:yaml/yaml.dart';
@@ -123,6 +124,7 @@ Future<void> _release({
 
     /// 获取所有文件
     var files = Glob(artifacts, recursive: true).listSync(root: root.path);
+    print("filesLength ${files.length}");
 
     /// 获取当前release的所有文件
     var assetsResult = await shell.run(
@@ -130,7 +132,6 @@ Future<void> _release({
 
     var assets = jsonDecode(assetsResult.first.stdout.toString()) as List?;
     print('assets: ${assets?.map((e) => e['name'])}');
-
     for (var file in files) {
       if (file is File) {
         var filePath = file.absolute.path;
