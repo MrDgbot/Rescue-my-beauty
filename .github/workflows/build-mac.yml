@@ -1,11 +1,11 @@
-name: build mac
+name: build mac-dmg
 on:
   workflow_dispatch:
     inputs:
       TAG:
-        description: 'Set a Verson'
+        description: 'Set a Tag'
         required: true
-        default: '1.0'
+        default: ''
   push:
     tags:
       - v*
