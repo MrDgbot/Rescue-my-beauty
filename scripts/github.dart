@@ -19,6 +19,8 @@ Future<void> main(List<String> arguments) async {
     ..addOption('fun', abbr: 'f', allowed: Fun.values.map((e) => e.name))
     ..addOption('token', abbr: 't')
     ..addOption('artifacts', abbr: 'a');
+  print(arguments);
+
   var parse = parser.parse(arguments);
   var token = parse['token'];
   var artifacts = parse['artifacts'];
@@ -87,91 +89,91 @@ Future<void> _release({
     }
   }
   dynamic id;
+
+  /// 检查tag是否存在
   // try {
   //   var response = await http.get(
   //     Uri.parse('https://api.github.com/repos/$repo/releases/tags/$tag'),
   //     headers: {
   //       'Authorization': 'Bearer $token',
-  //       'Accept': 'application/vnd.github+json',
+  //       'Accept': 'application/vnd.github.v3+json',
   //     },
   //   );
-  //   print(jsonDecode(response.body));
-  //   id = jsonDecode(response.body)??['id'];
+  //   id = jsonDecode(response.body)?['id'];
   // } catch (e) {
   //   print(e);
   // }
+
+  /// 创建release
   if (id == null) {
-    var data = jsonEncode({
-      "tag_name": tag,
-      "target_commitish": "main",
-      "name": tag,
-      "body": "",
-      "draft": false,
-      "prerelease": false,
-      "generate_release_notes": true
-    });
-    var response = await http.post(
-      Uri.parse('https://api.github.com/repos/$repo/releases'),
-      body: data,
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Accept': 'application/vnd.github+json',
-      },
-    );
-    print('id${jsonDecode(response.body)}');
-    print('body ${response.body}');
-    id = jsonDecode(response.body)?['id'];
-  }
-  print('release id: $id');
-  if (id == null) {
-    throw StateError(result.first.stdout);
-  }
-  var files = Glob(artifacts, recursive: true).listSync(root: root.path);
-  var response = await http.get(
-    Uri.parse('https://api.github.com/repos/$repo/releases/$id/assets'),
-    headers: {
-      'Authorization': 'Bearer $token',
-      'Accept': 'application/vnd.github.v3+json',
-    },
-  );
-  var assets = jsonDecode(response.body) as List?;
-  print('assets: ${assets?.map((e) => e['name'])}');
-  for (var file in files) {
-    if (file is File) {
-      var filePath = file.absolute.path;
-      var fileName = basename(filePath);
-      print('prepare upload: $filePath');
-      var exist = assets?.firstWhereOrNull((e) {
-        return e['name'] == fileName;
-      });
-      if (exist != null) {
-        print('exist asset: ${exist?['name']}');
-        // delete exist assert
-        var response = await http.delete(
-          Uri.parse(
-              'https://api.github.com/repos/$repo/releases/assets/${exist['id']}'),
-          headers: {
-            'Authorization': 'Bearer $token',
-            'Accept': 'application/vnd.github.v3+json',
-          },
-        );
-        print('delete end: ${response.statusCode}');
-      }
-      // upload asset.
-      var request = http.MultipartRequest(
-        'POST',
-        Uri.parse(
-            'https://uploads.github.com/repos/$repo/releases/$id/assets?name=$fileName'),
-      );
-      request.files.add(await http.MultipartFile.fromPath('file', filePath));
-      request.headers.addAll({
-        'Authorization': 'Bearer $token',
-        'Accept': 'application/vnd.github.v3+json',
-      });
-      var response = await request.send();
-      print('upload end: ${response.statusCode}, $filePath');
+    try {
+      var result = await shell.run(
+          'gh api --method POST -H "Accept: application/vnd.github+json" '
+              '/repos/$repo/releases '
+              '-f tag_name=$tag '
+              '-f target_commitish=master '
+              '-f name=$tag '
+              '-f body="" '
+              '-F draft=false '
+              '-F prerelease=false '
+              '-F generate_release_notes=false');
+      id = jsonDecode(result.first.stdout.toString())?['id'];
+    } catch (e) {
+      print(e);
     }
+
+    print('release id: $id');
+    if (id == null) {
+      throw StateError(result.first.stdout);
+    }
+
+    /// 获取所有文件
+    var files = Glob(artifacts, recursive: true).listSync(root: root.path);
+
+    /// 获取当前release的所有文件
+    var assetsResult = await shell.run(
+        'gh api -H "Accept: application/vnd.github+json" /repos/$repo/releases/$id/assets');
+
+    var assets = jsonDecode(assetsResult.first.stdout.toString()) as List?;
+    print('assets: ${assets?.map((e) => e['name'])}');
+
+    for (var file in files) {
+      if (file is File) {
+        var filePath = file.absolute.path;
+        var fileName = basename(filePath);
+        print('prepare upload: $filePath');
+        var exist = assets?.firstWhereOrNull((e) {
+          return e['name'] == fileName;
+        });
+        if (exist != null) {
+          print('exist asset: ${exist?['name']}');
+          // delete exist assert
+          var deleteResponse = await shell.run(
+              'gh api -H "Accept: application/vnd.github+json" --method DELETE /repos/$repo/releases/assets/${exist?['id']}');
+
+          print('delete end: ${deleteResponse.first.stdout}');
+        }
+        // upload asset.
+        var uploadResponse = await shell.run(
+            'gh api -H "Accept: application/vnd.github+json" --method POST /repos/$repo/releases/$id/assets'
+            ' --hostname=${await http.MultipartFile.fromPath('file', filePath)}'
+            ' -F file=@$filePath');
+        //
+        // var request = http.MultipartRequest(
+        //   'POST',
+        //   Uri.parse(
+        //       'https://uploads.github.com/repos/$repo/releases/$id/assets?name=$fileName'),
+        // );
+        // request.files.add(await http.MultipartFile.fromPath('file', filePath));
+        // request.headers.addAll({
+        //   'Authorization': 'Bearer $token',
+        //   'Accept': 'application/vnd.github+json',
+        // });
+        // var response = await request.send();
+        print('upload end: ${uploadResponse.first.stdout}, $filePath');
+      }
+    }
+    print('task end');
+    exit(0);
   }
-  print('task end');
-  exit(0);
 }
