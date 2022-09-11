@@ -115,13 +115,13 @@ Future<void> _release({
               '-F generate_release_notes=false');
       id = jsonDecode(response.first.stdout.toString())?['id'];
 
-      /// 发布Changelog
-      var logResponse = await shell.run('gitmoji-changelog ${verArr.first}');
-      if (logResponse.first.stdout.toString().contains("success")) {
-        await shell.run(
-            'git commit CHANGELOG.md -m"update changelog_${verArr.first}"');
-        await shell.run('git push origin');
-      }
+      // /// 发布Changelog
+      // var logResponse = await shell.run('gitmoji-changelog ${verArr.first}');
+      // if (logResponse.first.stdout.toString().contains("success")) {
+      //   await shell.run(
+      //       'git commit CHANGELOG.md -m"update changelog_${verArr.first}"');
+      //   await shell.run('git push origin');
+      // }
 
     } catch (e) {
       print(e);
