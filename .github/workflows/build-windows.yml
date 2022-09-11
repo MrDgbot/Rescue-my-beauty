@@ -17,7 +17,11 @@ jobs:
     name: Release build
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+      - name: Install dependencies
+        run: npm install -g gitmoji-changelog
       - name: Setup JDK
         uses: actions/setup-java@v1
         with:

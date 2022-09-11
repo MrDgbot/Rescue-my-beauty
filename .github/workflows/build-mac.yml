@@ -18,7 +18,12 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+      - name: Install dependencies
+        run: npm install -g gitmoji-changelog
 
       - name: Setup flutter
         uses: subosito/flutter-action@v2.4.0
