@@ -1,16 +1,21 @@
 # Changelog
 
 <a name="1.0.6"></a>
-## v1.0.6_84c4ef1
+## 1.0.6 (2022-09-11)
+
+### Added
+
+- ✨ Add CHANGELOG [[84c4ef1](https://github.com/MrDgbot/Rescue-my-beauty/commit/84c4ef1e59e2c5884b354d04730094ca63b3e922)]
 
 ### Changed
 
-- 🔧 Remove fetch-depth limit [[bc4390d](https://github.com/MrDgbot/Rescue-my-beauty/commit/bc4390d96de3b734beac00104090d0dc624a93d7)]
+- 🔧 Add remove fetch-depth limit [[bc4390d](https://github.com/MrDgbot/Rescue-my-beauty/commit/bc4390d96de3b734beac00104090d0dc624a93d7)]
 - 🔧 Add changelog to yaml [[1e795e5](https://github.com/MrDgbot/Rescue-my-beauty/commit/1e795e5a749c4eb99f4a98180bf8c75cb2fef855)]
-- 🎨 update yaml [[09b7874](https://github.com/MrDgbot/Rescue-my-beauty/commit/09b7874a36ce576fca6059503dc730cda97cd1fd)]
+- 💄 Update yaml [[ad817b1](https://github.com/MrDgbot/Rescue-my-beauty/commit/ad817b15d8e7c234fcfaabd7451ffde8b59b2de6)]
 
 ### Miscellaneous
 
+-  Update CHANGELOG.md [[98f5211](https://github.com/MrDgbot/Rescue-my-beauty/commit/98f52113aad934342fca3122ea6cc12f4c8eec4d)]
 -  Merge remote-tracking branch &#x27;origin/master&#x27; [[5777ebd](https://github.com/MrDgbot/Rescue-my-beauty/commit/5777ebdad7c777a0e1304433a0f2cace93c7d500)]
 -  Update build-apk.yml [[4bf268f](https://github.com/MrDgbot/Rescue-my-beauty/commit/4bf268f637793b24153e447c49ad7ba63729ca2d)]
 
