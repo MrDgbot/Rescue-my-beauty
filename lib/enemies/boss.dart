@@ -77,6 +77,7 @@ class Boss extends SimpleEnemy with ObjectCollision, Lighting {
 
   @override
   void die() {
+    life = 0;
     gameRef.add(
       AnimatedObjectOnce(
         animation: GameSpriteSheet.smokeExplosion(),

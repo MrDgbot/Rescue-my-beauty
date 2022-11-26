@@ -93,10 +93,10 @@ class LocalPlayer extends SimplePlayer
     simpleAttackMelee(
       id: id,
       damage: 10,
-      animationDown: SpriteSheetHero.attackEffectBottom(),
-      animationLeft: SpriteSheetHero.attackEffectLeft(),
+      // animationDown: SpriteSheetHero.attackEffectBottom(),
+      // animationLeft: SpriteSheetHero.attackEffectLeft(),
       animationRight: SpriteSheetHero.attackEffectRight(),
-      animationUp: SpriteSheetHero.attackEffectTop(),
+      // animationUp: SpriteSheetHero.attackEffectTop(),
       size: Vector2(GameUtils.tileSize * 2, GameUtils.tileSize * 4),
     );
     // simpleAttackMelee(
@@ -186,7 +186,6 @@ class LocalPlayer extends SimplePlayer
 
   @override
   void die() {
-    life = 0;
     gameRef.add(
       AnimatedObjectOnce(
         animation: SpriteSheetHero.smokeExplosion,
