@@ -1,23 +1,29 @@
-name: build mac
+name: build mac-dmg
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
-  workflow_dispatch:
-    inputs:
-      TAG:
-        description: 'Set a Verson'
-        required: true
-        default: '1.0'
   push:
-    tags:
-      - v*
+    branches:
+      - main
+      - master
+    tags-ignore:
+      - v**
+  workflow_dispatch:
+
 jobs:
   build:
     name: "Build MacOS"
     runs-on: macos-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
+
+#      - name: Use Node.js
+#        uses: actions/setup-node@v3
+#      - name: Install dependencies
+#        run: npm install -g gitmoji-changelog
 
       - name: Setup flutter
         uses: subosito/flutter-action@v2.4.0
@@ -49,23 +55,29 @@ jobs:
       - name: Compress artifacts
         run: zip -r macos-${{ github.event.inputs.TAG }}.zip build/macos/Build/Products/Release
 
-      - name: Upload artifacts to release
-        uses: svenstaro/upload-release-action@2.2.1
-        with:
-          # GitHub token.
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          # Local file to upload.
-          file: macos-${{ github.event.inputs.TAG }}.zip
-          # Tag to use as a release.
-          tag: ${{ github.event.inputs.TAG }}
+      - name: Release to github
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          dart scripts/github.dart --token=${{ secrets.GITHUB_TOKEN }} --fun=release --artifacts=build/macos/Build/Products/Release/rescue_my_beauty.dmg
 
-      - name: Upload DMG to release
-        uses: svenstaro/upload-release-action@2.2.1
-        with:
-          # GitHub token.
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          # Local file to upload.
-          file: build/macos/Build/Products/Release/rescue_my_beauty.dmg
-          asset_name: rescue_my_beauty-macos-${{ github.event.inputs.TAG }}.dmg
-          # Tag to use as a release.
-          tag: ${{ github.event.inputs.TAG }}
+#      - name: Upload artifacts to release
+#        uses: svenstaro/upload-release-action@2.2.1
+#        with:
+#          # GitHub token.
+#          repo_token: ${{ secrets.GITHUB_TOKEN }}
+#          # Local file to upload.
+#          file: macos-${{ github.event.inputs.TAG }}.zip
+#          # Tag to use as a release.
+#          tag: ${{ github.event.inputs.TAG }}
+#
+#      - name: Upload DMG to release
+#        uses: svenstaro/upload-release-action@2.2.1
+#        with:
+#          # GitHub token.
+#          repo_token: ${{ secrets.GITHUB_TOKEN }}
+#          # Local file to upload.
+#          file: build/macos/Build/Products/Release/rescue_my_beauty.dmg
+#          asset_name: rescue_my_beauty-macos-${{ github.event.inputs.TAG }}.dmg
+#          # Tag to use as a release.
+#          tag: ${{ github.event.inputs.TAG }}
