@@ -68,7 +68,7 @@ class _GamePageState extends State<GamePage>
     return Material(
       color: Colors.transparent,
       child: BonfireTiledWidget(
-        onReady: _startCameraMove,
+        onReady: _startTips,
         constructionMode: false,
         showCollisionArea: false,
         gameController: _controller,
@@ -155,6 +155,21 @@ class _GamePageState extends State<GamePage>
         ),
       ),
     );
+  }
+
+  /// 开局提示
+  Future<void> _startTips(BonfireGame game) async {
+    // 添加对话框TalkDialog
+    TalkDialog.show(context, [
+      Say(
+        text: [
+          const TextSpan(
+              text: '大雄，你终于来了！我被困在右下角的房间里了！'
+                  '\n快来救……我……啊……啊……啊……')
+        ],
+        personSayDirection: PersonSayDirection.RIGHT,
+      ),
+    ]);
   }
 
   /// 开局相机视角移动
